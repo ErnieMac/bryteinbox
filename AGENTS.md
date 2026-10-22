@@ -16,3 +16,4 @@
 - Collapse navigation independently of the conversation list and preserve the icon-rail toggle; users must always be able to reopen it.
 - All chat data flows through the MessagingProvider interface in src/providers (exported `messagingProvider`); components never import mock data directly, so Beeper/Unipile providers can be swapped in.
 - Tags, reminders and archive state live only in src/lib/organiser-store.ts (localStorage today); this keeps a later move to a database in one place.
+- Inbox screens read provider data through the query hooks in src/hooks/use-inbox.ts and organiser state through useOrganiser; this keeps loading/error handling and cache refresh in one place.
