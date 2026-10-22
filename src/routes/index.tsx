@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
 import { INITIAL_CONVOS, MEMBERS, PLATFORMS, TAGS, type Convo, type Platform, type Tag } from "@/lib/quicker-data";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Avatar, Kbd, PlatformBadge, TagPill } from "@/components/quicker/bits";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -147,7 +148,7 @@ function App() {
         </div>
         <div className="context-scroll min-h-0 flex-1 overflow-y-auto">
         <div className="contact-attributes">
-          <div><Hash /><span>Channel</span><strong>{PLATFORMS.find(p => p.id === active.platform)?.label}</strong></div>
+          <div><Hash /><span>Channel</span><strong className="inline-flex items-center gap-1.5"><PlatformBadge p={active.platform} size={14} className="ring-0" focusable />{PLATFORMS.find(p => p.id === active.platform)?.label ?? "Other channel"}</strong></div>
           <div><User /><span>Contact</span><strong>{active.participants[0]}</strong></div>
           <div><Globe /><span>Workspace</span><strong>Nestamedia Studios</strong></div>
           <div><Clock /><span>Last activity</span><strong>{active.time}</strong></div>
@@ -191,17 +192,17 @@ function App() {
     <div className="workspace-canvas">
     <div className={cn("chat-workspace", navigationOpen && "navigation-open", mobileThread && "mobile-thread-open", !detailsOpen && "details-hidden", navigationCollapsed && "navigation-collapsed")}>
       <Toaster position="bottom-center" />
-      <aside className="icon-rail">
+      <TooltipProvider delayDuration={200}><aside className="icon-rail" aria-label="Main navigation">
         <div className="rail-brand"><MessagesSquare size={19} /></div>
-        <Button variant="ghost" aria-label="Toggle navigation" title="Toggle navigation" aria-expanded={navigationOpen || !navigationCollapsed} onClick={() => { if (window.matchMedia("(max-width: 900px)").matches) setNavigationOpen(v => !v); else setNavigationCollapsed(v => !v); }}><PanelLeft /></Button>
+        <RailTip label="Toggle navigation"><Button variant="ghost" aria-label="Toggle navigation" aria-expanded={navigationOpen || !navigationCollapsed} onClick={() => { if (window.matchMedia("(max-width: 900px)").matches) setNavigationOpen(v => !v); else setNavigationCollapsed(v => !v); }}><PanelLeft /></Button></RailTip>
         <IconBtn title="Search conversations" active={switcher} onClick={() => setSwitcher(true)}><Search /></IconBtn>
         {navItems.map(n => (
           <IconBtn key={n.id} title={n.label} active={view === n.id} onClick={() => { setView(n.id); setFilter(null); setMobileThread(false); setNavigationOpen(false); }}><n.icon /></IconBtn>
         ))}
         <div className="mt-auto" />
-        <Button asChild variant="ghost" size="icon" title="Settings"><Link to="/integrations"><Settings /></Link></Button>
+        <RailTip label="Settings & integrations"><Button asChild variant="ghost" size="icon" aria-label="Settings & integrations"><Link to="/integrations"><Settings /></Link></Button></RailTip>
         <Avatar name="Nestamedia Studios" hue={20} size={25} />
-      </aside>
+      </aside></TooltipProvider>
       {/* Rail */}
       <aside className="navigation-pane flex shrink-0 flex-col border-r bg-rail px-2.5 py-3">
         <div className="navigation-title">Chat <IconBtn title="Collapse navigation" onClick={() => { setNavigationOpen(false); setNavigationCollapsed(true); }}><PanelLeft /></IconBtn></div>
@@ -214,7 +215,7 @@ function App() {
           ))}
           <SectionLabel>Platforms</SectionLabel>
           {PLATFORMS.map((p) => (
-            <RailItem key={p.id} active={filter?.kind === "platform" && filter.id === p.id} onClick={() => { setView("inbox"); setFilter({ kind: "platform", id: p.id }); }} icon={<PlatformBadge p={p.id} size={16} className="ring-0" />} label={p.label} count={p.count} />
+            <RailItem key={p.id} active={filter?.kind === "platform" && filter.id === p.id} onClick={() => { setView("inbox"); setFilter({ kind: "platform", id: p.id }); }} icon={<PlatformBadge p={p.id} size={16} className="ring-0" decorative />} label={p.label} count={p.count} />
           ))}
           <SectionLabel>Tags</SectionLabel>
           {TAGS.map((t) => (
@@ -407,7 +408,10 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   return <div className="px-2 pb-1 pt-4 text-[11px] font-semibold section-caption text-muted-foreground">{children}</div>;
 }
 function IconBtn({ children, onClick, title, active }: { children: React.ReactNode; onClick?: () => void; title?: string; active?: boolean }) {
-  return <Button variant="ghost" aria-label={title} aria-current={active ? "page" : undefined} title={title} onClick={onClick} className={cn("rounded-md p-1.5 hover:bg-accent", active && "rail-icon-active")}>{children}</Button>;
+  return <RailTip label={title ?? ""}><Button variant="ghost" aria-label={title} aria-current={active ? "page" : undefined} onClick={onClick} className={cn("rounded-md p-1.5 hover:bg-accent", active && "rail-icon-active")}>{children}</Button></RailTip>;
+}
+function RailTip({ label, children }: { label: string; children: React.ReactElement }) {
+  return <Tooltip><TooltipTrigger asChild>{children}</TooltipTrigger><TooltipContent side="right" sideOffset={8}>{label}</TooltipContent></Tooltip>;
 }
 function Section({ title, icon, children }: { title: string; icon: React.ReactNode; children: React.ReactNode }) {
   const [openS, setOpen] = useState(true);

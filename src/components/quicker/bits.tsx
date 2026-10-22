@@ -1,5 +1,6 @@
 import { PLATFORMS, type Platform, type Tag } from "@/lib/quicker-data";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 // Official brand glyphs (24x24, Simple Icons paths; iMessage drawn to match Apple's bubble mark).
 const GLYPHS: Record<Platform, string> = {
@@ -14,24 +15,48 @@ const GLYPHS: Record<Platform, string> = {
   x: "M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z",
 };
 
-export function PlatformBadge({ p, size = 16, className }: { p: Platform; size?: number; className?: string }) {
+// Fallback for channels without a dedicated brand mark (generic chat bubble).
+const FALLBACK_GLYPH = "M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm3 6.5a1.5 1.5 0 1 0 0 .01zm5 0a1.5 1.5 0 1 0 0 .01zm5 0a1.5 1.5 0 1 0 0 .01z";
+
+export function platformMeta(p: Platform | string) {
   const meta = PLATFORMS.find((x) => x.id === p);
-  if (!meta) return null;
-  const glyph = size * 0.62;
-  return (
+  if (meta) return { label: meta.label, color: meta.color, glyph: GLYPHS[meta.id], known: true };
+  const label = p ? `${String(p).charAt(0).toUpperCase()}${String(p).slice(1)}` : "Other channel";
+  return { label, color: "var(--muted-foreground)", glyph: FALLBACK_GLYPH, known: false };
+}
+
+/** Standard platform mark: square badge, glyph at 62% of badge, solid fill (no strokes), optical centering. */
+export function PlatformBadge({ p, size = 16, className, tooltip = true, decorative = false, focusable = false }: { p: Platform | string; size?: number; className?: string; tooltip?: boolean; decorative?: boolean; focusable?: boolean }) {
+  const meta = platformMeta(p);
+  const s = Math.round(size);
+  const glyph = Math.round(s * 0.62);
+  const badge = (
     <span
-      className={cn("inline-flex shrink-0 items-center justify-center rounded-[5px] text-white ring-2 ring-card", className)}
-      data-platform={p}
-      style={{ width: size, height: size, background: meta.color }}
+      role={decorative ? undefined : "img"}
+      aria-label={decorative ? undefined : `${meta.label}${meta.known ? "" : " (channel)"}`}
+      aria-hidden={decorative || undefined}
+      tabIndex={!decorative && tooltip && focusable ? 0 : undefined}
+      className={cn("platform-badge inline-flex shrink-0 items-center justify-center rounded-[22%] leading-none text-white ring-2 ring-card align-middle focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring", className)}
+      data-platform={meta.known ? p : "fallback"}
+      style={{ width: s, height: s, background: meta.color }}
     >
-      <svg viewBox="0 0 24 24" width={glyph} height={glyph} fill="currentColor" aria-hidden="true">
-        <path d={GLYPHS[p]} />
+      <svg viewBox="0 0 24 24" width={glyph} height={glyph} fill="currentColor" stroke="none" aria-hidden="true" focusable="false" className="block">
+        <path d={meta.glyph} />
       </svg>
     </span>
   );
+  if (decorative || !tooltip) return badge;
+  return (
+    <TooltipProvider delayDuration={200}>
+      <Tooltip>
+        <TooltipTrigger asChild>{badge}</TooltipTrigger>
+        <TooltipContent>{meta.label}</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
 }
 
-export function Avatar({ name, hue, size = 36, platform }: { name: string; hue: number; size?: number; platform?: Platform }) {
+export function Avatar({ name, hue, size = 36, platform }: { name: string; hue: number; size?: number; platform?: Platform | string }) {
   const initials = name.replace("#", "").split(/[\s·-]+/).filter(Boolean).slice(0, 2).map((s) => s[0]?.toUpperCase()).join("");
   return (
     <div className="relative shrink-0" style={{ width: size, height: size }}>
@@ -42,7 +67,7 @@ export function Avatar({ name, hue, size = 36, platform }: { name: string; hue: 
       >
         {initials}
       </div>
-      {platform && <PlatformBadge p={platform} size={size * 0.42} className="absolute -bottom-0.5 -right-0.5" />}
+      {platform && <PlatformBadge p={platform} size={Math.max(12, Math.round(size * 0.42))} className="absolute -bottom-0.5 -right-0.5" />}
     </div>
   );
 }
