@@ -148,7 +148,7 @@ function App() {
         </div>
         <div className="context-scroll min-h-0 flex-1 overflow-y-auto">
         <div className="contact-attributes">
-          <div><Hash /><span>Channel</span><strong>{PLATFORMS.find(p => p.id === active.platform)?.label}</strong></div>
+          <div><Hash /><span>Channel</span><strong className="inline-flex items-center gap-1.5"><PlatformBadge p={active.platform} size={14} className="ring-0" focusable />{PLATFORMS.find(p => p.id === active.platform)?.label ?? "Other channel"}</strong></div>
           <div><User /><span>Contact</span><strong>{active.participants[0]}</strong></div>
           <div><Globe /><span>Workspace</span><strong>Nestamedia Studios</strong></div>
           <div><Clock /><span>Last activity</span><strong>{active.time}</strong></div>
