@@ -72,13 +72,13 @@ function buildData(now = Date.UTC(2026, 9, 22, 12, 0)) {
     const msgs: Message[] = s.lines.map(([mine, text], j) => ({
       id: `${id}-m${j}`,
       chatId: id,
-      senderId: mine ? SELF.id : people[j % people.length].id,
+      senderId: mine ? SELF.id : people[j % people.length]!.id,
       text,
       sentAt: new Date(end - (s.lines.length - 1 - j) * 6 * 60_000).toISOString(),
       isFromMe: mine,
     }));
     messages.set(id, msgs);
-    const last = msgs[msgs.length - 1];
+    const last = msgs[msgs.length - 1]!;
     chats.push({
       id,
       accountId: `acc-${s.platform}`,

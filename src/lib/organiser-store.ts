@@ -79,7 +79,7 @@ export class OrganiserStore {
     this.setChatTags(chatId, cur.includes(tagId) ? cur.filter((t) => t !== tagId) : [...cur, tagId]);
   }
   chatsWithTag(tagId: string) {
-    return Object.keys(this.state.chatTags).filter((c) => this.state.chatTags[c].includes(tagId));
+    return Object.keys(this.state.chatTags).filter((c) => (this.state.chatTags[c] ?? []).includes(tagId));
   }
 
   // Reminders

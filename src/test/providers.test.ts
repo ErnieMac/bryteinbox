@@ -16,10 +16,10 @@ describe("MockProvider", () => {
   });
   it("sends and marks read", async () => {
     const p = new MockProvider();
-    const [chat] = await p.listChats({ unreadOnly: true });
+    const chat = (await p.listChats({ unreadOnly: true }))[0]!;
     await p.sendMessage(chat.id, "hi");
     await p.markRead(chat.id);
-    const [after] = await p.listChats({ chatIds: [chat.id] });
+    const after = (await p.listChats({ chatIds: [chat.id] }))[0]!;
     expect(after.lastMessage?.text).toBe("hi");
     expect(after.unreadCount).toBe(0);
   });
@@ -37,7 +37,7 @@ describe("OrganiserStore", () => {
     s.archive("c1");
     const r = new OrganiserStore(localStorage);
     expect(r.tagsFor("c1")).toEqual(["leads"]);
-    expect(r.sortedTags()[0].id).toBe("noise");
+    expect(r.sortedTags()[0]!.id).toBe("noise");
     expect(r.isArchived("c1")).toBe(true);
   });
   it("tomorrow preset is 9am next day", () => {
