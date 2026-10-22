@@ -10,6 +10,7 @@ import { INITIAL_CONVOS, MEMBERS, PLATFORMS, TAGS, type Convo, type Platform, ty
 import { Avatar, Kbd, PlatformBadge, TagPill } from "@/components/quicker/bits";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,6 +38,7 @@ function App() {
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [mobileThread, setMobileThread] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(true);
+  const [contextDrawerOpen, setContextDrawerOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [switcher, setSwitcher] = useState(false);
   const [input, setInput] = useState("");
@@ -99,7 +101,7 @@ function App() {
         if (u) { u(); (window as unknown as { __undo?: (() => void) | undefined }).__undo = undefined; toast("Send undone"); }
         return;
       }
-      if (e.key === "Escape") setSwitcher(false);
+      if (e.key === "Escape") { setSwitcher(false); setNavigationOpen(false); }
       if (e.key === "Tab" && document.activeElement === inputRef.current && showDraft) {
         e.preventDefault(); setInput(active.draft); return;
       }
@@ -131,6 +133,58 @@ function App() {
 
   const groups = (["Reminders", "Today", "Yesterday"] as const).map((g) => ({ g, items: visible.filter((c) => c.group === g) })).filter((x) => x.items.length);
   const heading = filter ? (filter.kind === "platform" ? PLATFORMS.find((p) => p.id === filter.id)?.label : filter.id) : navItems.find((n) => n.id === view)?.label;
+
+  const renderCustomerContext = (noteId: string) => (<>
+        <div className="contact-heading flex items-center gap-2 px-4 py-3">
+          <Avatar name={active.name} hue={active.hue} size={28} />
+          <span className="min-w-0 flex-1 truncate font-semibold">{active.name}</span>
+          <IconBtn title="Close customer details" onClick={() => { setDetailsOpen(false); setContextDrawerOpen(false); }}><XIcon /></IconBtn>
+        </div>
+        <div className="context-key-actions grid grid-cols-2 gap-2 border-b p-3">
+          <Button variant="outline" size="sm" onClick={() => snooze(active.id)}><Clock /> Remind me</Button>
+          <Button variant="outline" size="sm" onClick={() => archive(active.id)}><Archive /> Archive</Button>
+        </div>
+        <div className="context-scroll min-h-0 flex-1 overflow-y-auto">
+        <div className="contact-attributes">
+          <div><Hash /><span>Channel</span><strong>{PLATFORMS.find(p => p.id === active.platform)?.label}</strong></div>
+          <div><User /><span>Contact</span><strong>{active.participants[0]}</strong></div>
+          <div><Globe /><span>Workspace</span><strong>Nestamedia Studios</strong></div>
+          <div><Clock /><span>Last activity</span><strong>{active.time}</strong></div>
+        </div>
+        <div className="contact-notes px-4 pb-4">
+          <label htmlFor={noteId} className="mb-2 block text-xs text-muted-foreground">Notes</label>
+          <textarea id={noteId} key={active.id} placeholder="Write a note …" className="w-full resize-none rounded-md border bg-muted/40 p-3 text-xs outline-none focus:border-ring" rows={3} />
+          <div className="flex gap-1"><IconBtn title="Note attachment"><Paperclip /></IconBtn><IconBtn title="Note emoji"><Smile /></IconBtn></div>
+        </div>
+        <Section title="Members" icon={<Users className="h-3.5 w-3.5" />}>
+          {(active.platform === "slack" ? MEMBERS : active.participants.map((n) => ({ name: n, role: "Contact", hue: active.hue }))).map((m) => (
+            <div key={m.name} className="flex items-center gap-2.5 py-1"><Avatar name={m.name} hue={m.hue} size={26} /><div><div className="font-medium">{m.name}</div><div className="text-[11px] text-muted-foreground">{m.role}</div></div></div>
+          ))}
+        </Section>
+        <Section title="Threads" icon={<MessagesSquare className="h-3.5 w-3.5" />}>
+          {[["Graphic v2", "Leo: swapped the hero crop", "12m", 4], ["Email copy", "Jess: subject line ideas?", "1h", 2]].map(([t, p, time, n]) => (
+            <div key={t as string} className="rounded-lg bg-card p-2 ring-1 ring-border"><div className="flex justify-between font-medium">{t}<span className="text-[11px] text-muted-foreground">{time}</span></div><div className="truncate text-[12px] text-muted-foreground">{p}</div><div className="text-[11px] text-primary">{n} replies</div></div>
+          ))}
+        </Section>
+        <Section title="Media" icon={<Image className="h-3.5 w-3.5" />}>
+          <div className="grid grid-cols-3 gap-1.5">{[20, 45, 200].map((h) => <div key={h} className="contact-avatar aspect-square rounded-md" data-tone={h % 3} />)}</div>
+          <div className="mt-2 text-[12px] text-primary">quicker.chat · beehiiv.com/partners</div>
+        </Section>
+        <Section title="AI Summary" icon={<Sparkles className="h-3.5 w-3.5" />}>
+          <ul className="list-disc space-y-1 pl-4 text-[12.5px]">
+            <li>Landing page went live this morning.</li>
+            <li>Graphic v2 posted, beehiiv cross-promo confirmed.</li>
+            <li>Final email pass waits on you.</li>
+          </ul>
+        </Section>
+        <Section title="Actions" icon={<Zap className="h-3.5 w-3.5" />}>
+          <div className="flex flex-wrap gap-1.5">
+            {TAGS.slice(0, 4).map((t) => <Button variant="ghost" key={t.id} onClick={() => setTag(active.id, t.id)}><TagPill tag={t.id} /></Button>)}
+          </div>
+
+        </Section>
+        </div>
+  </>);
 
   return (
     <div className="workspace-canvas">
@@ -178,7 +232,7 @@ function App() {
       {/* List */}
       <section className="conversation-pane flex shrink-0 flex-col border-r bg-pane">
         <header className="list-header flex items-center gap-2 px-4 pb-2 pt-4">
-          <h1 className="text-sm font-semibold leading-none">{heading}</h1>
+          <h1 className="min-w-0 truncate text-sm font-semibold leading-none">{heading}</h1>
           <label className="ml-auto flex cursor-pointer items-center gap-1.5 text-xs text-muted-foreground">
             Focus
             <Button variant="ghost" onClick={() => setFocus(!focus)} className={cn("relative h-4 w-7 rounded-full transition", focus ? "bg-primary" : "bg-border")}>
@@ -226,20 +280,22 @@ function App() {
 
       {/* Thread */}
       <main className="thread-pane flex min-w-0 flex-1 flex-col bg-card">
-        <header className="thread-header flex items-center gap-3 border-b px-5 py-3">
+        <header className="thread-header border-b">
+          <div className="thread-identity flex min-w-0 items-center gap-2">
           <IconBtn title="Back to conversations" onClick={() => setMobileThread(false)}><ArrowLeft className="mobile-back" /></IconBtn>
           <Avatar name={active.name} hue={active.hue} size={32} platform={active.platform} />
           <div className="min-w-0">
-            <div className="font-semibold">{active.name}</div>
+            <div className="truncate font-semibold">{active.name}</div>
             <div className="truncate text-[11px] text-muted-foreground">{active.participants.join(", ")}</div>
           </div>
-          <div className="ml-auto flex items-center gap-1">
+          </div>
+          <div className="thread-actions flex shrink-0 items-center gap-1">
             <Button variant="outline" size="sm" className="pause-control" onClick={() => snooze(active.id)}><Pause /> Pause</Button>
             <IconBtn title="Remind me" onClick={() => snooze(active.id)}><Clock className="h-4 w-4" /></IconBtn>
             <IconBtn title="Archive (E)" onClick={() => archive(active.id)}><Archive className="h-4 w-4" /></IconBtn>
             <IconBtn title="Search" onClick={() => setSwitcher(true)}><Search className="h-4 w-4" /></IconBtn>
-            <IconBtn title="Details" onClick={() => setDetailsOpen(v => !v)}><Info className="h-4 w-4" /></IconBtn>
-            <IconBtn title="More"><MoreHorizontal className="h-4 w-4" /></IconBtn>
+            <IconBtn title="Details" onClick={() => { if (window.matchMedia("(max-width: 1199px)").matches) setContextDrawerOpen(true); else setDetailsOpen(v => !v); }}><Info className="h-4 w-4" /></IconBtn>
+            
           </div>
         </header>
         <div className="message-stream flex-1 space-y-5 overflow-y-auto px-6 py-5">
@@ -308,58 +364,20 @@ function App() {
       </main>
 
       {/* Inspector */}
-      <aside className="inspector-pane flex shrink-0 flex-col overflow-y-auto border-l bg-pane">
-        <div className="contact-heading flex items-center gap-2 px-4 py-3">
-          <Avatar name={active.name} hue={active.hue} size={28} />
-          <span className="min-w-0 flex-1 truncate font-semibold">{active.name}</span>
-          <IconBtn title="Contact options" onClick={() => toast("Contact details are read-only in this preview")}><MoreHorizontal /></IconBtn>
-        </div>
-        <div className="contact-attributes">
-          <div><Hash /><span>Channel</span><strong>{PLATFORMS.find(p => p.id === active.platform)?.label}</strong></div>
-          <div><User /><span>Contact</span><strong>{active.participants[0]}</strong></div>
-          <div><Globe /><span>Workspace</span><strong>Nestamedia Studios</strong></div>
-          <div><Clock /><span>Last activity</span><strong>{active.time}</strong></div>
-        </div>
-        <div className="contact-notes px-4 pb-4">
-          <label htmlFor="contact-note" className="mb-2 block text-xs text-muted-foreground">Notes</label>
-          <textarea id="contact-note" key={active.id} placeholder="Write a note …" className="w-full resize-none rounded-md border bg-muted/40 p-3 text-xs outline-none focus:border-ring" rows={3} />
-          <div className="flex gap-1"><IconBtn title="Note attachment"><Paperclip /></IconBtn><IconBtn title="Note emoji"><Smile /></IconBtn></div>
-        </div>
-        <Section title="Members" icon={<Users className="h-3.5 w-3.5" />}>
-          {(active.platform === "slack" ? MEMBERS : active.participants.map((n) => ({ name: n, role: "Contact", hue: active.hue }))).map((m) => (
-            <div key={m.name} className="flex items-center gap-2.5 py-1"><Avatar name={m.name} hue={m.hue} size={26} /><div><div className="font-medium">{m.name}</div><div className="text-[11px] text-muted-foreground">{m.role}</div></div></div>
-          ))}
-        </Section>
-        <Section title="Threads" icon={<MessagesSquare className="h-3.5 w-3.5" />}>
-          {[["Graphic v2", "Leo: swapped the hero crop", "12m", 4], ["Email copy", "Jess: subject line ideas?", "1h", 2]].map(([t, p, time, n]) => (
-            <div key={t as string} className="rounded-lg bg-card p-2 ring-1 ring-border"><div className="flex justify-between font-medium">{t}<span className="text-[11px] text-muted-foreground">{time}</span></div><div className="truncate text-[12px] text-muted-foreground">{p}</div><div className="text-[11px] text-primary">{n} replies</div></div>
-          ))}
-        </Section>
-        <Section title="Media" icon={<Image className="h-3.5 w-3.5" />}>
-          <div className="grid grid-cols-3 gap-1.5">{[20, 45, 200].map((h) => <div key={h} className="contact-avatar aspect-square rounded-md" data-tone={h % 3} />)}</div>
-          <div className="mt-2 text-[12px] text-primary">quicker.chat · beehiiv.com/partners</div>
-        </Section>
-        <Section title="AI Summary" icon={<Sparkles className="h-3.5 w-3.5" />}>
-          <ul className="list-disc space-y-1 pl-4 text-[12.5px]">
-            <li>Landing page went live this morning.</li>
-            <li>Graphic v2 posted, beehiiv cross-promo confirmed.</li>
-            <li>Final email pass waits on you.</li>
-          </ul>
-        </Section>
-        <Section title="Actions" icon={<Zap className="h-3.5 w-3.5" />}>
-          <div className="flex flex-wrap gap-1.5">
-            {TAGS.slice(0, 4).map((t) => <Button variant="ghost" key={t.id} onClick={() => setTag(active.id, t.id)}><TagPill tag={t.id} /></Button>)}
-          </div>
-          <div className="mt-2 grid grid-cols-2 gap-1.5">
-            <Button variant="ghost" onClick={() => snooze(active.id)} className="rounded-md border bg-card py-1.5 hover:bg-accent">Remind me</Button>
-            <Button variant="ghost" onClick={() => archive(active.id)} className="rounded-md border bg-card py-1.5 hover:bg-accent">Archive</Button>
-          </div>
-        </Section>
+      <aside aria-label="Customer context" className="inspector-pane flex shrink-0 flex-col border-l bg-pane">
+        {renderCustomerContext("desktop-contact-note")}
       </aside>
+
+      <Sheet open={contextDrawerOpen} onOpenChange={setContextDrawerOpen}>
+        <SheetContent className="customer-context-drawer" aria-describedby={undefined}>
+          <SheetTitle className="sr-only">Customer details</SheetTitle>
+          {renderCustomerContext("drawer-contact-note")}
+        </SheetContent>
+      </Sheet>
 
       {switcher && (
         <div className="fixed inset-0 z-50 flex items-start justify-center bg-foreground/20 pt-28" onClick={() => setSwitcher(false)}>
-          <div className="w-[520px] overflow-hidden rounded-xl border bg-card shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          <div className="w-[520px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border bg-card shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center gap-2 border-b px-4 py-3"><Search className="h-4 w-4 text-muted-foreground" /><input autoFocus value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Jump to a conversation…" className="flex-1 bg-transparent text-sm outline-none" /><Button variant="ghost" onClick={() => setSwitcher(false)}><XIcon className="h-4 w-4" /></Button></div>
             <div className="max-h-80 overflow-y-auto p-1.5">
               {convos.filter((c) => (c.name + c.preview).toLowerCase().includes(query.toLowerCase())).map((c) => (
