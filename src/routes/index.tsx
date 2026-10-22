@@ -183,7 +183,7 @@ function App() {
   });
 
   const unreadOf = (ids: (c: Chat) => boolean) => all.filter((c) => !archived.has(c.id) && c.unreadCount > 0 && ids(c)).length;
-  const navItems: { id: View; label: string; icon: typeof Inbox; count?: number }[] = [
+  const navItems: { id: View; label: string; icon: typeof Inbox; count?: number | undefined }[] = [
     { id: "inbox", label: "Inbox", icon: Inbox, count: unreadOf(() => true) },
     { id: "unread", label: "Unread", icon: Mail },
     { id: "reminders", label: "Reminders", icon: Clock, count: Object.keys(org.reminders).length || undefined },
