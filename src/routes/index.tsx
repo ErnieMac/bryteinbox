@@ -36,6 +36,7 @@ function App() {
   const [filter, setFilter] = useState<Filter>(null);
   const [focus, setFocus] = useState(false);
   const [navigationOpen, setNavigationOpen] = useState(false);
+  const [navigationCollapsed, setNavigationCollapsed] = useState(false);
   const [mobileThread, setMobileThread] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(true);
   const [contextDrawerOpen, setContextDrawerOpen] = useState(false);
@@ -138,7 +139,7 @@ function App() {
         <div className="contact-heading flex items-center gap-2 px-4 py-3">
           <Avatar name={active.name} hue={active.hue} size={28} />
           <span className="min-w-0 flex-1 truncate font-semibold">{active.name}</span>
-          <IconBtn title="Close customer details" onClick={() => { setDetailsOpen(false); setContextDrawerOpen(false); }}><XIcon /></IconBtn>
+          <Button variant="ghost" size="sm" aria-label="Close customer details" title="Close customer details" onClick={() => { setDetailsOpen(false); setContextDrawerOpen(false); }}><XIcon /> Close</Button>
         </div>
         <div className="context-key-actions grid grid-cols-2 gap-2 border-b p-3">
           <Button variant="outline" size="sm" onClick={() => snooze(active.id)}><Clock /> Remind me</Button>
@@ -188,11 +189,11 @@ function App() {
 
   return (
     <div className="workspace-canvas">
-    <div className={cn("chat-workspace", navigationOpen && "navigation-open", mobileThread && "mobile-thread-open", !detailsOpen && "details-hidden")}>
+    <div className={cn("chat-workspace", navigationOpen && "navigation-open", mobileThread && "mobile-thread-open", !detailsOpen && "details-hidden", navigationCollapsed && "navigation-collapsed")}>
       <Toaster position="bottom-center" />
       <aside className="icon-rail">
         <div className="rail-brand"><MessagesSquare size={19} /></div>
-        <IconBtn title="Toggle navigation" onClick={() => setNavigationOpen(v => !v)}><PanelLeft /></IconBtn>
+        <Button variant="ghost" aria-label="Toggle navigation" title="Toggle navigation" aria-expanded={navigationOpen || !navigationCollapsed} onClick={() => { if (window.matchMedia("(max-width: 900px)").matches) setNavigationOpen(v => !v); else setNavigationCollapsed(v => !v); }}><PanelLeft /></Button>
         <IconBtn title="Search conversations" onClick={() => setSwitcher(true)}><Search /></IconBtn>
         <IconBtn title="Inbox" onClick={() => { setView("inbox"); setFilter(null); setMobileThread(false); }}><Inbox /></IconBtn>
         <IconBtn title="Reminders" onClick={() => { setView("reminders"); setFilter(null); }}><Clock /></IconBtn>
@@ -204,7 +205,7 @@ function App() {
       </aside>
       {/* Rail */}
       <aside className="navigation-pane flex shrink-0 flex-col border-r bg-rail px-2.5 py-3">
-        <div className="navigation-title">Chat <span>Quicker</span></div>
+        <div className="navigation-title">Chat <IconBtn title="Collapse navigation" onClick={() => { setNavigationOpen(false); setNavigationCollapsed(true); }}><PanelLeft /></IconBtn></div>
         <Button variant="ghost" onClick={() => setSwitcher(true)} className="mb-3 flex items-center gap-2 rounded-md border bg-card px-2.5 py-1.5 text-muted-foreground">
           <Search className="h-3.5 w-3.5" /> Search chat <span className="ml-auto"><Kbd>⌘K</Kbd></span>
         </Button>
@@ -294,7 +295,7 @@ function App() {
             <IconBtn title="Remind me" onClick={() => snooze(active.id)}><Clock className="h-4 w-4" /></IconBtn>
             <IconBtn title="Archive (E)" onClick={() => archive(active.id)}><Archive className="h-4 w-4" /></IconBtn>
             <IconBtn title="Search" onClick={() => setSwitcher(true)}><Search className="h-4 w-4" /></IconBtn>
-            <IconBtn title="Details" onClick={() => { if (window.matchMedia("(max-width: 1199px)").matches) setContextDrawerOpen(true); else setDetailsOpen(v => !v); }}><Info className="h-4 w-4" /></IconBtn>
+            <Button variant="ghost" aria-label="Customer details" title="Open or close customer details" aria-controls="customer-context" onClick={() => { if (window.matchMedia("(max-width: 1199px)").matches) setContextDrawerOpen(true); else setDetailsOpen(v => !v); }}><Info className="h-4 w-4" /></Button>
             
           </div>
         </header>
@@ -364,7 +365,7 @@ function App() {
       </main>
 
       {/* Inspector */}
-      <aside aria-label="Customer context" className="inspector-pane flex shrink-0 flex-col border-l bg-pane">
+      <aside id="customer-context" aria-label="Customer context" className="inspector-pane flex shrink-0 flex-col border-l bg-pane">
         {renderCustomerContext("desktop-contact-note")}
       </aside>
 
