@@ -57,7 +57,7 @@ function App() {
     });
   }, [convos, view, filter, focus, query]);
 
-  const active = (convos.find((c) => c.id === activeId) ?? INITIAL_CONVOS[0] ?? { ...INITIAL_CONVOS[0], id: "", name: "", participants: [], messages: [], draft: "" } as Convo);
+  const active = (convos.find((c) => c.id === activeId) ?? INITIAL_CONVOS[0] as Convo);
   const showDraft = !draftDismissed[active.id] && !input;
 
   const update = (id: string, fn: (c: Convo) => Convo) => setConvos((cs) => cs.map((c) => (c.id === id ? fn(c) : c)));
@@ -164,7 +164,7 @@ function App() {
           ))}
           <SectionLabel>Tags</SectionLabel>
           {TAGS.map((t) => (
-            <RailItem key={t.id} active={filter?.kind === "tag" && filter.id === t.id} onClick={() => { setView("inbox"); setFilter({ kind: "tag", id: t.id }); }} icon={<span className="mx-1 h-2.5 w-2.5 rounded-full" style={{ background: `oklch(0.65 0.14 ${t.hue})` }} />} label={t.id} count={t.count} />
+            <RailItem key={t.id} active={filter?.kind === "tag" && filter.id === t.id} onClick={() => { setView("inbox"); setFilter({ kind: "tag", id: t.id }); }} icon={<span className="mx-1 h-2.5 w-2.5 rounded-full" data-tag={t.id} />} label={t.id} count={t.count} />
           ))}
           <RailItem onClick={() => toast("New tag created")} icon={<Plus className="h-4 w-4" />} label="New tag" muted />
           <RailItem icon={<EyeOff className="h-4 w-4" />} label="Hidden" count={2} muted />
@@ -336,7 +336,7 @@ function App() {
           ))}
         </Section>
         <Section title="Media" icon={<Image className="h-3.5 w-3.5" />}>
-          <div className="grid grid-cols-3 gap-1.5">{[20, 45, 200].map((h) => <div key={h} className="aspect-square rounded-md" style={{ background: `oklch(0.85 0.06 ${h})` }} />)}</div>
+          <div className="grid grid-cols-3 gap-1.5">{[20, 45, 200].map((h) => <div key={h} className="contact-avatar aspect-square rounded-md" data-tone={h % 3} />)}</div>
           <div className="mt-2 text-[12px] text-primary">quicker.chat · beehiiv.com/partners</div>
         </Section>
         <Section title="AI Summary" icon={<Sparkles className="h-3.5 w-3.5" />}>
