@@ -383,11 +383,11 @@ function App() {
             <div className="max-h-80 overflow-y-auto p-1.5">
               {convos.filter((c) => (c.name + c.preview).toLowerCase().includes(query.toLowerCase())).map((c) => (
                 <Button variant="ghost" key={c.id} onClick={() => { open(c.id); setSwitcher(false); setQuery(""); }} className="flex w-full items-center gap-3 rounded-lg px-2.5 py-2 text-left hover:bg-accent">
-                  <Avatar name={c.name} hue={c.hue} size={28} platform={c.platform} /><div className="min-w-0"><div className="font-medium">{c.name}</div><div className="truncate text-sm text-muted-foreground">{c.preview}</div></div>
+                  <Avatar name={c.name} hue={c.hue} size={28} platform={c.platform} /><div className="min-w-0"><div className="truncate font-medium">{c.name}</div><div className="truncate text-sm text-muted-foreground">{c.preview}</div></div>
                 </Button>
               ))}
             </div>
-            <div className="flex gap-3 border-t px-4 py-2 text-xs text-muted-foreground"><span><Kbd>J</Kbd>/<Kbd>K</Kbd> navigate</span><span><Kbd>E</Kbd> archive</span><span><Kbd>Tab</Kbd> accept draft</span><span><Kbd>⌘Z</Kbd> undo send</span></div>
+            <div className="flex flex-wrap gap-x-3 gap-y-1 border-t px-4 py-2 text-xs text-muted-foreground"><span><Kbd>J</Kbd>/<Kbd>K</Kbd> navigate</span><span><Kbd>E</Kbd> archive</span><span><Kbd>Tab</Kbd> accept draft</span><span><Kbd>⌘Z</Kbd> undo send</span></div>
           </div>
         </div>
       )}
