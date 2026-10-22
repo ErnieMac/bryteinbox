@@ -411,7 +411,7 @@ function IconBtn({ children, onClick, title, active }: { children: React.ReactNo
   return <RailTip label={title ?? ""}><Button variant="ghost" aria-label={title} aria-current={active ? "page" : undefined} onClick={onClick} className={cn("rounded-md p-1.5 hover:bg-accent", active && "rail-icon-active")}>{children}</Button></RailTip>;
 }
 function RailTip({ label, children }: { label: string; children: React.ReactElement }) {
-  return <Tooltip><TooltipTrigger asChild>{children}</TooltipTrigger><TooltipContent side="right" sideOffset={8}>{label}</TooltipContent></Tooltip>;
+  return <TooltipProvider delayDuration={200}><Tooltip><TooltipTrigger asChild>{children}</TooltipTrigger><TooltipContent side="right" sideOffset={8}>{label}</TooltipContent></Tooltip></TooltipProvider>;
 }
 function Section({ title, icon, children }: { title: string; icon: React.ReactNode; children: React.ReactNode }) {
   const [openS, setOpen] = useState(true);
