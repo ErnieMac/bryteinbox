@@ -160,20 +160,20 @@ function App() {
         </div>
         <Section title="Members" icon={<Users className="h-3.5 w-3.5" />}>
           {(active.platform === "slack" ? MEMBERS : active.participants.map((n) => ({ name: n, role: "Contact", hue: active.hue }))).map((m) => (
-            <div key={m.name} className="flex items-center gap-2.5 py-1"><Avatar name={m.name} hue={m.hue} size={26} /><div><div className="font-medium">{m.name}</div><div className="text-[11px] text-muted-foreground">{m.role}</div></div></div>
+            <div key={m.name} className="flex items-center gap-2.5 py-1"><Avatar name={m.name} hue={m.hue} size={26} /><div><div className="font-medium">{m.name}</div><div className="text-xs text-muted-foreground">{m.role}</div></div></div>
           ))}
         </Section>
         <Section title="Threads" icon={<MessagesSquare className="h-3.5 w-3.5" />}>
           {[["Graphic v2", "Leo: swapped the hero crop", "12m", 4], ["Email copy", "Jess: subject line ideas?", "1h", 2]].map(([t, p, time, n]) => (
-            <div key={t as string} className="rounded-lg bg-card p-2 ring-1 ring-border"><div className="flex justify-between font-medium">{t}<span className="text-[11px] text-muted-foreground">{time}</span></div><div className="truncate text-[12px] text-muted-foreground">{p}</div><div className="text-[11px] text-primary">{n} replies</div></div>
+            <div key={t as string} className="rounded-lg bg-card p-2 ring-1 ring-border"><div className="flex justify-between font-medium">{t}<span className="text-xs text-muted-foreground">{time}</span></div><div className="truncate text-sm text-muted-foreground">{p}</div><div className="text-xs text-primary">{n} replies</div></div>
           ))}
         </Section>
         <Section title="Media" icon={<Image className="h-3.5 w-3.5" />}>
           <div className="grid grid-cols-3 gap-1.5">{[20, 45, 200].map((h) => <div key={h} className="contact-avatar aspect-square rounded-md" data-tone={h % 3} />)}</div>
-          <div className="mt-2 text-[12px] text-primary">quicker.chat · beehiiv.com/partners</div>
+          <div className="mt-2 text-sm text-primary">quicker.chat · beehiiv.com/partners</div>
         </Section>
         <Section title="AI Summary" icon={<Sparkles className="h-3.5 w-3.5" />}>
-          <ul className="list-disc space-y-1 pl-4 text-[12.5px]">
+          <ul className="list-disc space-y-1 pl-4 text-sm">
             <li>Landing page went live this morning.</li>
             <li>Graphic v2 posted, beehiiv cross-promo confirmed.</li>
             <li>Final email pass waits on you.</li>
@@ -256,16 +256,16 @@ function App() {
           {groups.length === 0 && <p className="p-6 text-center text-muted-foreground">Nothing here. Inbox zero ✨</p>}
           {groups.map(({ g, items }) => (
             <div key={g}>
-              <div className="px-4 pb-1 pt-3 text-[11px] font-semibold section-caption text-muted-foreground">{g}</div>
+              <div className="px-4 pb-1 pt-3 text-xs font-semibold section-caption text-muted-foreground">{g}</div>
               {items.map((c) => (
                 <Button variant="ghost" key={c.id} onClick={() => open(c.id)} className={cn("conversation-row mx-2 flex w-[calc(100%-1rem)] gap-2.5 rounded-md px-2.5 py-2.5 text-left", activeId === c.id ? "bg-muted" : "hover:bg-accent/60")}>
                   <Avatar name={c.name} hue={c.hue} platform={c.platform} />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <span className={cn("truncate", c.unread ? "font-semibold" : "font-medium")}>{c.name}</span>
-                      <span className="ml-auto shrink-0 text-[11px] text-muted-foreground">{c.time}</span>
+                      <span className="ml-auto shrink-0 text-xs text-muted-foreground">{c.time}</span>
                     </div>
-                    <p className={cn("truncate text-[12px]", c.unread ? "text-foreground" : "text-muted-foreground")}>{c.preview}</p>
+                    <p className={cn("truncate text-sm", c.unread ? "text-foreground" : "text-muted-foreground")}>{c.preview}</p>
                     <div className="mt-1 flex items-center gap-1.5">
                       {c.tag && <TagPill tag={c.tag} />}
                       {c.suggested && <TagPill tag={c.suggested} suggested onClick={() => setTag(c.id, c.suggested ?? "Hot lead")} />}
@@ -287,7 +287,7 @@ function App() {
           <Avatar name={active.name} hue={active.hue} size={32} platform={active.platform} />
           <div className="min-w-0">
             <div className="truncate font-semibold">{active.name}</div>
-            <div className="truncate text-[11px] text-muted-foreground">{active.participants.join(", ")}</div>
+            <div className="truncate text-xs text-muted-foreground">{active.participants.join(", ")}</div>
           </div>
           </div>
           <div className="thread-actions flex shrink-0 items-center gap-1">
@@ -300,7 +300,7 @@ function App() {
           </div>
         </header>
         <div className="message-stream flex-1 space-y-5 overflow-y-auto px-6 py-5">
-          <div className="text-center text-[11px] text-muted-foreground">Today</div>
+          <div className="text-center text-xs text-muted-foreground">Today</div>
           {active.messages.map((m, i) => {
             const grouped = i > 0 && active.messages[i - 1]?.from === m.from;
             const member = MEMBERS.find((x) => x.name === m.from);
@@ -308,22 +308,22 @@ function App() {
               <div key={m.id} className={cn("flex gap-3", grouped && "-mt-3", m.me && "flex-row-reverse")}>
                 <div className="w-9">{!grouped && <Avatar name={m.from} hue={m.me ? 45 : member?.hue ?? active.hue} />}</div>
                 <div className={cn("message-content", m.me && "text-right")}>
-                  {!grouped && <div className="mb-0.5 flex items-baseline gap-2"><span className="font-semibold">{m.from}</span><span className="text-[11px] text-muted-foreground">{m.time}</span></div>}
+                  {!grouped && <div className="mb-0.5 flex items-baseline gap-2"><span className="font-semibold">{m.from}</span><span className="text-xs text-muted-foreground">{m.time}</span></div>}
                   <div className={cn("message-bubble inline-block px-3.5 py-2 text-left leading-relaxed", m.me ? "outgoing-bubble" : "bg-muted")}>{m.text}</div>
                   {m.card === "promo" && (
                     <div className="link-preview mt-2 overflow-hidden rounded-lg border">
                       <div className="promo-preview flex h-28 items-center justify-center text-2xl font-semibold">quicker.chat</div>
-                      <div className="p-3"><div className="font-semibold">Quicker Chat — every DM, one inbox</div><div className="text-[12px] text-muted-foreground">quicker.chat · Slack, LinkedIn, WhatsApp, X & iMessage</div></div>
+                      <div className="p-3"><div className="font-semibold">Quicker Chat — every DM, one inbox</div><div className="text-sm text-muted-foreground">quicker.chat · Slack, LinkedIn, WhatsApp, X & iMessage</div></div>
                     </div>
                   )}
                   {m.card === "beehiiv" && (
                     <div className="link-preview mt-2 flex items-center gap-3 rounded-lg border p-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent font-bold text-primary">bh</div>
-                      <div><div className="font-semibold">Cross-promo brief · beehiiv</div><div className="text-[12px] text-muted-foreground">beehiiv.com/partners/quicker · PDF, 4 pages</div></div>
+                      <div><div className="font-semibold">Cross-promo brief · beehiiv</div><div className="text-sm text-muted-foreground">beehiiv.com/partners/quicker · PDF, 4 pages</div></div>
                     </div>
                   )}
-                  {m.threadReplies && <div className="mt-1.5 flex items-center gap-2 text-[12px] font-medium text-primary"><MessagesSquare className="h-3.5 w-3.5" /> {m.threadReplies} replies <span className="font-normal text-muted-foreground">Last reply 12m ago</span></div>}
-                  {m.reactions && <div className="mt-1.5 flex gap-1">{m.reactions.map((r) => <span key={r} className="rounded-full border bg-card px-2 py-0.5 text-[11px]">{r}</span>)}</div>}
+                  {m.threadReplies && <div className="mt-1.5 flex items-center gap-2 text-sm font-medium text-primary"><MessagesSquare className="h-3.5 w-3.5" /> {m.threadReplies} replies <span className="font-normal text-muted-foreground">Last reply 12m ago</span></div>}
+                  {m.reactions && <div className="mt-1.5 flex gap-1">{m.reactions.map((r) => <span key={r} className="rounded-full border bg-card px-2 py-0.5 text-xs">{r}</span>)}</div>}
                 </div>
               </div>
             );
@@ -383,11 +383,11 @@ function App() {
             <div className="max-h-80 overflow-y-auto p-1.5">
               {convos.filter((c) => (c.name + c.preview).toLowerCase().includes(query.toLowerCase())).map((c) => (
                 <Button variant="ghost" key={c.id} onClick={() => { open(c.id); setSwitcher(false); setQuery(""); }} className="flex w-full items-center gap-3 rounded-lg px-2.5 py-2 text-left hover:bg-accent">
-                  <Avatar name={c.name} hue={c.hue} size={28} platform={c.platform} /><div className="min-w-0"><div className="font-medium">{c.name}</div><div className="truncate text-[12px] text-muted-foreground">{c.preview}</div></div>
+                  <Avatar name={c.name} hue={c.hue} size={28} platform={c.platform} /><div className="min-w-0"><div className="truncate font-medium">{c.name}</div><div className="truncate text-sm text-muted-foreground">{c.preview}</div></div>
                 </Button>
               ))}
             </div>
-            <div className="flex gap-3 border-t px-4 py-2 text-[11px] text-muted-foreground"><span><Kbd>J</Kbd>/<Kbd>K</Kbd> navigate</span><span><Kbd>E</Kbd> archive</span><span><Kbd>Tab</Kbd> accept draft</span><span><Kbd>⌘Z</Kbd> undo send</span></div>
+            <div className="flex flex-wrap gap-x-3 gap-y-1 border-t px-4 py-2 text-xs text-muted-foreground"><span><Kbd>J</Kbd>/<Kbd>K</Kbd> navigate</span><span><Kbd>E</Kbd> archive</span><span><Kbd>Tab</Kbd> accept draft</span><span><Kbd>⌘Z</Kbd> undo send</span></div>
           </div>
         </div>
       )}
@@ -400,12 +400,12 @@ function RailItem({ icon, label, count, active, onClick, accent, muted }: { icon
   return (
     <Button variant="ghost" onClick={onClick} className={cn("flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-left", active ? "bg-card font-medium shadow-sm ring-1 ring-border" : "hover:bg-accent", muted && "text-muted-foreground")}>
       {icon}<span className="flex-1 truncate">{label}</span>
-      {count != null && <span className={cn("rounded-full px-1.5 text-[11px]", accent ? "bg-unread text-primary-foreground" : "text-muted-foreground")}>{count}</span>}
+      {count != null && <span className={cn("rounded-full px-1.5 text-xs", accent ? "bg-unread text-primary-foreground" : "text-muted-foreground")}>{count}</span>}
     </Button>
   );
 }
 function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <div className="px-2 pb-1 pt-4 text-[11px] font-semibold section-caption text-muted-foreground">{children}</div>;
+  return <div className="px-2 pb-1 pt-4 text-xs font-semibold section-caption text-muted-foreground">{children}</div>;
 }
 function IconBtn({ children, onClick, title, active }: { children: React.ReactNode; onClick?: () => void; title?: string; active?: boolean }) {
   return <RailTip label={title ?? ""}><Button variant="ghost" aria-label={title} aria-current={active ? "page" : undefined} onClick={onClick} className={cn("rounded-md p-1.5 hover:bg-accent", active && "rail-icon-active")}>{children}</Button></RailTip>;
@@ -417,7 +417,7 @@ function Section({ title, icon, children }: { title: string; icon: React.ReactNo
   const [openS, setOpen] = useState(true);
   return (
     <div className="border-b px-4 py-3">
-      <Button variant="ghost" onClick={() => setOpen(!openS)} className="flex w-full items-center gap-1.5 text-[11px] font-semibold section-caption text-muted-foreground">
+      <Button variant="ghost" onClick={() => setOpen(!openS)} className="flex w-full items-center gap-1.5 text-xs font-semibold section-caption text-muted-foreground">
         {icon}{title}<ChevronDown className={cn("ml-auto h-3.5 w-3.5 transition", !openS && "-rotate-90")} />
       </Button>
       {openS && <div className="mt-2 space-y-1.5">{children}</div>}
