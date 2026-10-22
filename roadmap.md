@@ -4,3 +4,4 @@
 - [x] Verify navigation, message sending, and narrow-screen layout.
 - [ ] Remove outer spacing and adapt customer context to a slide-out panel on smaller screens.
 - [ ] Verify customer details, key actions, and edge-to-edge sizing across screen sizes.
+- [ ] Add clear drawer open/close controls and collapsible menu navigation at every screen size.
