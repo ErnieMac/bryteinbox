@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { accountsQuery, useOrganiser } from "@/hooks/use-inbox";
 import type { Tag } from "@/lib/organiser-store";
+import { useAuth } from '@/providers/auth';
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
@@ -28,6 +29,7 @@ export const Route = createFileRoute("/settings")({
 const TAG_COLORS = ["#F59E0B", "#3B82F6", "#10B981", "#EC4899", "#8B5CF6", "#EF4444", "#14B8A6", "#9CA3AF"];
 
 function Settings() {
+  const { user } = useAuth();
   return (
     <div className="settings-page min-h-screen bg-background">
       <div className="mx-auto max-w-3xl px-6 py-10">
@@ -36,6 +38,7 @@ function Settings() {
         </Link>
         <h1 className="text-3xl font-semibold">Settings</h1>
         <p className="mt-2 text-muted-foreground">Connected accounts, tags and AI suggested drafts.</p>
+        <Button className="mt-5" variant="outline" asChild><Link to={user ? '/account' : '/auth'}>{user ? 'Your account & providers' : 'Sign in to your account'}</Link></Button>
         <AccountsSection />
         <TagsSection />
       </div>
