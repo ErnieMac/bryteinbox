@@ -264,7 +264,7 @@ function App() {
           <IconBtn key={n.id} title={n.label} active={view === n.id && !filter} onClick={() => { setView(n.id); setFilter(null); setMobileThread(false); setNavigationOpen(false); }}><n.icon /></IconBtn>
         ))}
         <div className="mt-auto" />
-        <RailTip label="Settings & integrations"><Button asChild variant="ghost" size="icon" aria-label="Settings & integrations"><Link to="/integrations"><Settings /></Link></Button></RailTip>
+        <RailTip label="Settings"><Button asChild variant="ghost" size="icon" aria-label="Settings"><Link to="/settings"><Settings /></Link></Button></RailTip>
         <Avatar name="Nestamedia Studios" hue={20} size={25} />
       </aside>
 
@@ -292,7 +292,7 @@ function App() {
           <RailItem onClick={() => { const name = window.prompt("New tag name"); if (name?.trim()) { store.createTag(name, "#6366F1"); toast(`Tag “${name.trim()}” created`); } }} icon={<Plus className="h-4 w-4" />} label="New tag" muted />
         </nav>
         <div className="mt-auto space-y-0.5 border-t pt-2">
-          <Link to="/integrations" className="flex items-center gap-2.5 rounded-md px-2 py-1.5 hover:bg-accent"><Settings className="h-4 w-4" /> Settings</Link>
+          <Link to="/settings" className="flex items-center gap-2.5 rounded-md px-2 py-1.5 hover:bg-accent"><Settings className="h-4 w-4" /> Settings</Link>
           <RailItem onClick={() => toast("Thanks for the feedback!")} icon={<MessageSquareHeart className="h-4 w-4" />} label="Send Feedback" />
         </div>
       </aside>
