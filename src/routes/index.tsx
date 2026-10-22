@@ -5,7 +5,7 @@ import {
   Inbox, Bell, Clock, Archive, Settings, MessageSquareHeart, Plus, Search, Info, Hash, ChevronDown, Smile, List, Sparkles,
   Send, X as XIcon, Users, MessagesSquare, PanelLeft, ArrowLeft, Globe, User, Tag as TagIcon, AlertCircle, RotateCw, Mail,
 } from "lucide-react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Avatar, Kbd, PlatformBadge, PLATFORM_META, TagPill, hueFrom, platformMeta } from "@/components/quicker/bits";
 import { cn } from "@/lib/utils";
@@ -18,6 +18,7 @@ import {
 import { PLATFORMS, type Chat, type Message, type Platform } from "@/providers";
 import { reminderPreset } from "@/lib/organiser-store";
 import { accountsQuery, chatsQuery, messagesQuery, useMarkRead, useOrganiser, useSendMessage } from "@/hooks/use-inbox";
+import { useAuth } from '@/providers/auth';
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -57,6 +58,7 @@ function dayLabel(iso: string) {
 const otherPeople = (c: Chat) => c.participants.filter((p) => !p.isSelf);
 
 function App() {
+  const { user } = useAuth();
   const { state: org, store } = useOrganiser();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [view, setView] = useState<View>("inbox");
@@ -257,7 +259,6 @@ function App() {
   return (
     <div className="workspace-canvas">
     <div className={cn("chat-workspace", navigationOpen && "navigation-open", mobileThread && "mobile-thread-open", !detailsOpen && "details-hidden", navigationCollapsed && "navigation-collapsed")}>
-      <Toaster position="bottom-center" />
       <aside className="icon-rail" aria-label="Main navigation">
         <div className="rail-brand"><MessagesSquare size={19} /></div>
         <RailTip label="Toggle navigation"><Button variant="ghost" aria-label="Toggle navigation" aria-expanded={navigationOpen || !navigationCollapsed} onClick={() => { if (window.matchMedia("(max-width: 900px)").matches) setNavigationOpen((v) => !v); else setNavigationCollapsed((v) => !v); }}><PanelLeft /></Button></RailTip>
@@ -267,7 +268,7 @@ function App() {
         ))}
         <div className="mt-auto" />
         <RailTip label="Settings"><Button asChild variant="ghost" size="icon" aria-label="Settings"><Link to="/settings"><Settings /></Link></Button></RailTip>
-        <Avatar name="Nestamedia Studios" hue={20} size={25} />
+        <RailTip label={user ? 'Your account' : 'Sign in'}><Button variant="ghost" size="icon" asChild><Link to={user ? '/account' : '/auth'} aria-label={user ? 'Your account' : 'Sign in'}><User size={20} /></Link></Button></RailTip>
       </aside>
 
       <aside className="navigation-pane flex shrink-0 flex-col border-r bg-rail px-2.5 py-3">
@@ -301,7 +302,7 @@ function App() {
 
       <section className="conversation-pane flex shrink-0 flex-col border-r bg-pane">
         <header className="list-header flex items-center gap-2 px-4 pb-2 pt-4">
-          <h1 className="min-w-0 truncate text-sm font-semibold leading-none">{heading}</h1>
+          <h1 className="min-w-0 truncate text-sm font-semibold leading-none">{heading}</h1><span className="text-xs text-muted-foreground">Sample</span>
           {chats.isFetching && !chats.isPending && <RotateCw className="ml-auto h-3.5 w-3.5 animate-spin text-muted-foreground" aria-label="Refreshing" />}
         </header>
         <div className="px-4 pb-2">

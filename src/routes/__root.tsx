@@ -13,6 +13,8 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from '@/providers/auth';
+import { Toaster } from 'sonner';
 
 function NotFoundComponent() {
   return (
@@ -79,7 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Quicker Chat" },
+      { title: "BryteChat" },
       { name: "description", content: "One calm inbox for all your messages." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -120,7 +122,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <TooltipProvider delayDuration={200}><Outlet /></TooltipProvider>
+      <AuthProvider><TooltipProvider delayDuration={200}><Outlet /><Toaster position="bottom-center" /></TooltipProvider></AuthProvider>
     </QueryClientProvider>
   );
 }
