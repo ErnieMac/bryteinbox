@@ -1,12 +1,12 @@
 export type Platform = "imessage" | "linkedin" | "slack" | "whatsapp" | "x";
 export type Tag = "Client" | "Hot lead" | "Sponsors" | "Investors" | "Hiring" | "Team" | "Personal";
 
-export const PLATFORMS: { id: Platform; label: string; count: number; color: string; letter: string }[] = [
-  { id: "imessage", label: "iMessage", count: 1, color: "oklch(0.72 0.17 145)", letter: "i" },
-  { id: "linkedin", label: "LinkedIn", count: 25, color: "oklch(0.5 0.13 245)", letter: "in" },
-  { id: "slack", label: "Slack", count: 1, color: "oklch(0.42 0.14 330)", letter: "#" },
-  { id: "whatsapp", label: "WhatsApp", count: 2, color: "oklch(0.68 0.16 150)", letter: "W" },
-  { id: "x", label: "X", count: 15, color: "oklch(0.2 0 0)", letter: "X" },
+export const PLATFORMS: { id: Platform; label: string; count: number; color: string }[] = [
+  { id: "imessage", label: "iMessage", count: 1, color: "#34C759" },
+  { id: "linkedin", label: "LinkedIn", count: 25, color: "#0A66C2" },
+  { id: "slack", label: "Slack", count: 1, color: "#4A154B" },
+  { id: "whatsapp", label: "WhatsApp", count: 2, color: "#25D366" },
+  { id: "x", label: "X", count: 15, color: "#0F1419" },
 ];
 
 export const TAGS: { id: Tag; count?: number; hue: number }[] = [
