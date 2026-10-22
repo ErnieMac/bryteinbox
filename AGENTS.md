@@ -14,3 +14,5 @@
 - Reuse one customer-context renderer for the desktop pane and accessible Sheet drawer; this keeps contact content and pinned actions identical as screen width changes.
 - Scope customer drawer backdrop styling through SheetContent's overlayClassName; other dialogs retain their existing appearance and motion.
 - Collapse navigation independently of the conversation list and preserve the icon-rail toggle; users must always be able to reopen it.
+- All chat data flows through the MessagingProvider interface in src/providers (exported `messagingProvider`); components never import mock data directly, so Beeper/Unipile providers can be swapped in.
+- Tags, reminders and archive state live only in src/lib/organiser-store.ts (localStorage today); this keeps a later move to a database in one place.
