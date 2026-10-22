@@ -68,7 +68,7 @@ function AccountsSection() {
             Couldn't load accounts. <button type="button" className="underline" onClick={() => accounts.refetch()}>Try again</button>
           </div>
         ) : (
-          accounts.data.map((a) => {
+          (accounts.data ?? []).map((a) => {
             const off = disconnected[a.id] || a.status !== "connected";
             return (
               <div key={a.id} className="flex items-center gap-4 rounded-lg border bg-card p-4">

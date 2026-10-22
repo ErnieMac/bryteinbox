@@ -459,7 +459,7 @@ function App() {
                 </Button>
               ))}
             </div>
-            <div className="flex flex-wrap gap-x-3 gap-y-1 border-t px-4 py-2 text-xs text-muted-foreground"><span><Kbd>J</Kbd>/<Kbd>K</Kbd> navigate</span><span><Kbd>R</Kbd> reply</span><span><Kbd>E</Kbd> archive</span><span><Kbd>H</Kbd> remind</span><span><Kbd>/</Kbd> search</span><span><Kbd>⌘Z</Kbd> undo send</span></div>
+            <div className="flex flex-wrap gap-x-3 gap-y-1 border-t px-4 py-2 text-xs text-muted-foreground"><span><Kbd>J</Kbd>/<Kbd>K</Kbd> navigate</span><span><Kbd>R</Kbd> reply</span><span><Kbd>E</Kbd> archive</span><span><Kbd>H</Kbd> remind</span><span><Kbd>T</Kbd> tag</span><span><Kbd>/</Kbd> search</span><span><Kbd>⌘Z</Kbd> undo send</span></div>
           </div>
         </div>
       )}
