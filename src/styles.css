@@ -83,8 +83,9 @@
 .workspace-canvas { height: 100dvh; background: var(--card); }
 [data-platform="slack"] { background: var(--platform-slack); }
 [data-platform="linkedin"] { background: var(--platform-linkedin); }
-[data-platform="imessage"], [data-platform="whatsapp"] { background: var(--platform-chat); }
-[data-platform="x"] { background: var(--foreground); }
+[data-platform="imessage"] { background: var(--platform-imessage); }
+[data-platform="whatsapp"] { background: var(--platform-chat); }
+[data-platform="x"] { background: #0F1419; }
 .contact-avatar { background: var(--avatar-rose); }
 .contact-avatar[data-tone="1"] { background: var(--avatar-lime); }
 .contact-avatar[data-tone="2"] { background: var(--avatar-green); }
