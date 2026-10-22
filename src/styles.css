@@ -200,3 +200,4 @@
     font-family: var(--font-sans);
   }
 }
+.platform-badge > svg { width: 62% !important; height: 62% !important; color: inherit !important; flex-shrink: 0; }
