@@ -119,6 +119,9 @@
 .navigation-pane > button { font-size: 0.75rem; gap: 4px; padding: 5px; }
 .navigation-pane kbd { font-size: 0.625rem; padding: 1px 3px; }
 .section-caption { letter-spacing: 0; font-size: 0.6875rem; font-weight: 500; }
+/* A flex child that scrolls must be allowed to shrink, or it grows past its pane and
+   overlaps the controls below it (seen with the nav list vs. Settings). */
+.chat-workspace .overflow-y-auto { min-height: 0; }
 .conversation-pane { width: 268px; }
 .list-header { min-height: 56px; border-bottom: 1px solid var(--border); padding-top: 12px; padding-bottom: 12px; }
 .list-header label { font-size: 0.75rem; }
