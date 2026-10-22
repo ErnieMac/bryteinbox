@@ -1,6 +1,6 @@
 import { PLATFORMS, type Platform, type Tag } from "@/lib/quicker-data";
 import { cn } from "@/lib/utils";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 // Official brand glyphs (24x24, Simple Icons paths; iMessage drawn to match Apple's bubble mark).
 const GLYPHS: Record<Platform, string> = {
@@ -47,12 +47,10 @@ export function PlatformBadge({ p, size = 16, className, tooltip = true, decorat
   );
   if (decorative || !tooltip) return badge;
   return (
-    <TooltipProvider delayDuration={200}>
-      <Tooltip>
+          <Tooltip>
         <TooltipTrigger asChild>{badge}</TooltipTrigger>
         <TooltipContent>{meta.label}</TooltipContent>
       </Tooltip>
-    </TooltipProvider>
   );
 }
 
