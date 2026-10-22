@@ -26,7 +26,7 @@ export function platformMeta(p: Platform | string) {
 }
 
 /** Standard platform mark: square badge, glyph at 62% of badge, solid fill (no strokes), optical centering. */
-export function PlatformBadge({ p, size = 16, className, tooltip = true, decorative = false }: { p: Platform | string; size?: number; className?: string; tooltip?: boolean; decorative?: boolean }) {
+export function PlatformBadge({ p, size = 16, className, tooltip = true, decorative = false, focusable = false }: { p: Platform | string; size?: number; className?: string; tooltip?: boolean; decorative?: boolean; focusable?: boolean }) {
   const meta = platformMeta(p);
   const s = Math.round(size);
   const glyph = Math.round(s * 0.62);
@@ -35,7 +35,7 @@ export function PlatformBadge({ p, size = 16, className, tooltip = true, decorat
       role={decorative ? undefined : "img"}
       aria-label={decorative ? undefined : `${meta.label}${meta.known ? "" : " (channel)"}`}
       aria-hidden={decorative || undefined}
-      tabIndex={!decorative && tooltip ? 0 : undefined}
+      tabIndex={!decorative && tooltip && focusable ? 0 : undefined}
       className={cn("platform-badge inline-flex shrink-0 items-center justify-center rounded-[22%] leading-none text-white ring-2 ring-card align-middle focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring", className)}
       data-platform={meta.known ? p : "fallback"}
       style={{ width: s, height: s, background: meta.color }}

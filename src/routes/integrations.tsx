@@ -40,7 +40,7 @@ function Integrations() {
           {GUIDES.map((g) => (
             <div key={g.id} className="rounded-lg border bg-card">
               <div className="flex items-center gap-4 p-4">
-                <PlatformBadge p={g.id} size={36} className="ring-0" />
+                <PlatformBadge p={g.id} size={36} className="ring-0" focusable />
                 <Button variant="ghost" className="flex-1 text-left" onClick={() => setOpenId(openId === g.id ? null : g.id)}>
                   <div className="font-semibold">{g.name}</div>
                   <div className="text-sm text-muted-foreground">{g.method}</div>
