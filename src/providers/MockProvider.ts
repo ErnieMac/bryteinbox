@@ -99,17 +99,19 @@ export class MockProvider implements MessagingProvider {
   private messages: Map<string, Message[]>;
   private seq = 0;
 
-  constructor() {
+  constructor(private opts: { latencyMs?: number } = {}) {
     const d = buildData();
     this.chats = d.chats;
     this.messages = d.messages;
   }
 
   async listAccounts() {
+    await this.delay();
     return ACCOUNTS.map((a) => ({ ...a }));
   }
 
   async listChats(filters: ChatFilters = {}) {
+    await this.delay();
     const q = filters.search?.trim().toLowerCase();
     return this.chats
       .filter((c) => !filters.platforms?.length || filters.platforms.includes(c.platform))
@@ -126,6 +128,7 @@ export class MockProvider implements MessagingProvider {
   }
 
   async getMessages(chatId: string, cursor?: string | null): Promise<MessagePage> {
+    await this.delay();
     const all = this.requireMessages(chatId);
     const end = cursor ? Number(cursor) : all.length;
     const start = Math.max(0, end - PAGE_SIZE);
@@ -133,6 +136,7 @@ export class MockProvider implements MessagingProvider {
   }
 
   async sendMessage(chatId: string, text: string) {
+    await this.delay();
     const body = text.trim();
     if (!body) throw new Error("Message is empty");
     const all = this.requireMessages(chatId);
@@ -152,9 +156,15 @@ export class MockProvider implements MessagingProvider {
   }
 
   async markRead(chatId: string) {
+    await this.delay();
     const chat = this.chats.find((c) => c.id === chatId);
     if (!chat) throw new Error(`Unknown chat ${chatId}`);
     chat.unreadCount = 0;
+  }
+
+  private delay() {
+    const ms = this.opts.latencyMs ?? 0;
+    return ms ? new Promise((r) => setTimeout(r, ms)) : Promise.resolve();
   }
 
   private requireMessages(chatId: string) {

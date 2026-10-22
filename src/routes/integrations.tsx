@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ArrowLeft, Check } from "lucide-react";
 import { PlatformBadge } from "@/components/quicker/bits";
 import { Button } from "@/components/ui/button";
-import type { Platform } from "@/lib/quicker-data";
+import type { Platform } from "@/providers/types";
 
 export const Route = createFileRoute("/integrations")({
   head: () => ({
