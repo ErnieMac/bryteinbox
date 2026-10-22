@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
 import { INITIAL_CONVOS, MEMBERS, PLATFORMS, TAGS, type Convo, type Platform, type Tag } from "@/lib/quicker-data";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Avatar, Kbd, PlatformBadge, TagPill } from "@/components/quicker/bits";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -192,7 +192,7 @@ function App() {
     <div className="workspace-canvas">
     <div className={cn("chat-workspace", navigationOpen && "navigation-open", mobileThread && "mobile-thread-open", !detailsOpen && "details-hidden", navigationCollapsed && "navigation-collapsed")}>
       <Toaster position="bottom-center" />
-      <TooltipProvider delayDuration={200}><aside className="icon-rail" aria-label="Main navigation">
+      <aside className="icon-rail" aria-label="Main navigation">
         <div className="rail-brand"><MessagesSquare size={19} /></div>
         <RailTip label="Toggle navigation"><Button variant="ghost" aria-label="Toggle navigation" aria-expanded={navigationOpen || !navigationCollapsed} onClick={() => { if (window.matchMedia("(max-width: 900px)").matches) setNavigationOpen(v => !v); else setNavigationCollapsed(v => !v); }}><PanelLeft /></Button></RailTip>
         <IconBtn title="Search conversations" active={switcher} onClick={() => setSwitcher(true)}><Search /></IconBtn>
@@ -202,7 +202,7 @@ function App() {
         <div className="mt-auto" />
         <RailTip label="Settings & integrations"><Button asChild variant="ghost" size="icon" aria-label="Settings & integrations"><Link to="/integrations"><Settings /></Link></Button></RailTip>
         <Avatar name="Nestamedia Studios" hue={20} size={25} />
-      </aside></TooltipProvider>
+      </aside>
       {/* Rail */}
       <aside className="navigation-pane flex shrink-0 flex-col border-r bg-rail px-2.5 py-3">
         <div className="navigation-title">Chat <IconBtn title="Collapse navigation" onClick={() => { setNavigationOpen(false); setNavigationCollapsed(true); }}><PanelLeft /></IconBtn></div>
@@ -411,7 +411,7 @@ function IconBtn({ children, onClick, title, active }: { children: React.ReactNo
   return <RailTip label={title ?? ""}><Button variant="ghost" aria-label={title} aria-current={active ? "page" : undefined} onClick={onClick} className={cn("rounded-md p-1.5 hover:bg-accent", active && "rail-icon-active")}>{children}</Button></RailTip>;
 }
 function RailTip({ label, children }: { label: string; children: React.ReactElement }) {
-  return <TooltipProvider delayDuration={200}><Tooltip><TooltipTrigger asChild>{children}</TooltipTrigger><TooltipContent side="right" sideOffset={8}>{label}</TooltipContent></Tooltip></TooltipProvider>;
+  return <Tooltip><TooltipTrigger asChild>{children}</TooltipTrigger><TooltipContent side="right" sideOffset={8}>{label}</TooltipContent></Tooltip>;
 }
 function Section({ title, icon, children }: { title: string; icon: React.ReactNode; children: React.ReactNode }) {
   const [openS, setOpen] = useState(true);
