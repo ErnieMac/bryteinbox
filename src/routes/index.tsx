@@ -51,7 +51,7 @@ function App() {
     });
   }, [convos, view, filter, focus, query]);
 
-  const active = convos.find((c) => c.id === activeId) ?? convos[0];
+  const active = (convos.find((c) => c.id === activeId) ?? convos[0])!;
   const showDraft = !draftDismissed[active.id] && !input;
 
   const update = (id: string, fn: (c: Convo) => Convo) => setConvos((cs) => cs.map((c) => (c.id === id ? fn(c) : c)));
