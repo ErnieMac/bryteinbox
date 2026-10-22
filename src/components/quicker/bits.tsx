@@ -1,4 +1,4 @@
-import { PLATFORMS, type Platform, type Tag } from "@/lib/quicker-data";
+import type { Platform } from "@/providers/types";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -12,15 +12,29 @@ const GLYPHS: Record<Platform, string> = {
     "M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z",
   whatsapp:
     "M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z",
+  instagram:
+    "M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm5 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zm5.3-4a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z",
+  telegram:
+    "M21.9 3.6 18.7 19c-.2 1.1-.9 1.4-1.8.9l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.2 12.8l-4.8-1.5c-1-.3-1.1-1 .2-1.5L20.4 2.5c.9-.3 1.7.2 1.5 1.1z",
   x: "M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z",
 };
 
 // Fallback for channels without a dedicated brand mark (generic chat bubble).
 const FALLBACK_GLYPH = "M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm3 6.5a1.5 1.5 0 1 0 0 .01zm5 0a1.5 1.5 0 1 0 0 .01zm5 0a1.5 1.5 0 1 0 0 .01z";
 
+export const PLATFORM_META: Record<Platform, { label: string; color: string }> = {
+  imessage: { label: "iMessage", color: "#34C759" },
+  whatsapp: { label: "WhatsApp", color: "#25D366" },
+  linkedin: { label: "LinkedIn", color: "#0A66C2" },
+  instagram: { label: "Instagram", color: "#E1306C" },
+  telegram: { label: "Telegram", color: "#26A5E4" },
+  slack: { label: "Slack", color: "#4A154B" },
+  x: { label: "X", color: "#0F1419" },
+};
+
 export function platformMeta(p: Platform | string) {
-  const meta = PLATFORMS.find((x) => x.id === p);
-  if (meta) return { label: meta.label, color: meta.color, glyph: GLYPHS[meta.id], known: true };
+  const meta = PLATFORM_META[p as Platform];
+  if (meta) return { label: meta.label, color: meta.color, glyph: GLYPHS[p as Platform], known: true };
   const label = p ? `${String(p).charAt(0).toUpperCase()}${String(p).slice(1)}` : "Other channel";
   return { label, color: "var(--muted-foreground)", glyph: FALLBACK_GLYPH, known: false };
 }
@@ -40,7 +54,7 @@ export function PlatformBadge({ p, size = 16, className, tooltip = true, decorat
       data-platform={meta.known ? p : "fallback"}
       style={{ width: s, height: s, background: meta.color }}
     >
-      <svg viewBox="0 0 24 24" width={glyph} height={glyph} fill="currentColor" stroke="none" aria-hidden="true" focusable="false" className="block">
+      <svg viewBox="0 0 24 24" width={glyph} height={glyph} fill="currentColor" fillRule="evenodd" stroke="none" aria-hidden="true" focusable="false" className="block">
         <path d={meta.glyph} />
       </svg>
     </span>
@@ -70,17 +84,24 @@ export function Avatar({ name, hue, size = 36, platform }: { name: string; hue: 
   );
 }
 
-export function TagPill({ tag, suggested, onClick }: { tag: Tag; suggested?: boolean; onClick?: () => void }) {
+export function TagPill({ name, color, suggested, onClick }: { name: string; color: string; suggested?: boolean; onClick?: () => void }) {
   return (
     <span
       onClick={onClick}
-      className={cn("inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium", suggested && "border border-dashed cursor-pointer")}
-      data-tag={tag}
+      className={cn("tag-pill inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium", suggested && "border border-dashed cursor-pointer")}
+      style={{ background: `color-mix(in oklab, ${color} 14%, var(--card))`, color: `color-mix(in oklab, ${color} 75%, var(--foreground))` }}
     >
-      <span className="tag-dot h-1.5 w-1.5 rounded-full" />
-      {suggested ? `Suggested: ${tag}` : tag}
+      <span className="h-1.5 w-1.5 rounded-full" style={{ background: color }} />
+      {suggested ? `Suggested: ${name}` : name}
     </span>
   );
+}
+
+/** Stable 0-359 hue from any id, for avatar tones. */
+export function hueFrom(id: string) {
+  let h = 0;
+  for (const ch of id) h = (h * 31 + ch.charCodeAt(0)) % 360;
+  return h;
 }
 
 export function Kbd({ children }: { children: React.ReactNode }) {
