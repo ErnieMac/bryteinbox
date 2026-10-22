@@ -12,4 +12,5 @@
 - Keep shared visual roles in src/styles.css and use the shared Button for inbox controls; this keeps the reference-inspired workspace consistent across pages.
 - Keep inbox interactions in the existing client-side simulation; presentation changes must not imply real account connections.
 - Reuse one customer-context renderer for the desktop pane and accessible Sheet drawer; this keeps contact content and pinned actions identical as screen width changes.
+- Scope customer drawer backdrop styling through SheetContent's overlayClassName; other dialogs retain their existing appearance and motion.
 - Collapse navigation independently of the conversation list and preserve the icon-rail toggle; users must always be able to reopen it.

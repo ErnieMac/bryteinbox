@@ -194,11 +194,10 @@ function App() {
       <aside className="icon-rail">
         <div className="rail-brand"><MessagesSquare size={19} /></div>
         <Button variant="ghost" aria-label="Toggle navigation" title="Toggle navigation" aria-expanded={navigationOpen || !navigationCollapsed} onClick={() => { if (window.matchMedia("(max-width: 900px)").matches) setNavigationOpen(v => !v); else setNavigationCollapsed(v => !v); }}><PanelLeft /></Button>
-        <IconBtn title="Search conversations" onClick={() => setSwitcher(true)}><Search /></IconBtn>
-        <IconBtn title="Inbox" onClick={() => { setView("inbox"); setFilter(null); setMobileThread(false); }}><Inbox /></IconBtn>
-        <IconBtn title="Reminders" onClick={() => { setView("reminders"); setFilter(null); }}><Clock /></IconBtn>
-        <IconBtn title="Archive" onClick={() => { setView("archive"); setFilter(null); }}><Archive /></IconBtn>
-        <div className="rail-current"><MessagesSquare size={15} /></div>
+        <IconBtn title="Search conversations" active={switcher} onClick={() => setSwitcher(true)}><Search /></IconBtn>
+        {navItems.map(n => (
+          <IconBtn key={n.id} title={n.label} active={view === n.id} onClick={() => { setView(n.id); setFilter(null); setMobileThread(false); setNavigationOpen(false); }}><n.icon /></IconBtn>
+        ))}
         <div className="mt-auto" />
         <Button asChild variant="ghost" size="icon" title="Settings"><Link to="/integrations"><Settings /></Link></Button>
         <Avatar name="Nestamedia Studios" hue={20} size={25} />
@@ -295,7 +294,7 @@ function App() {
             <IconBtn title="Remind me" onClick={() => snooze(active.id)}><Clock className="h-4 w-4" /></IconBtn>
             <IconBtn title="Archive (E)" onClick={() => archive(active.id)}><Archive className="h-4 w-4" /></IconBtn>
             <IconBtn title="Search" onClick={() => setSwitcher(true)}><Search className="h-4 w-4" /></IconBtn>
-            <Button variant="ghost" aria-label="Customer details" title="Open or close customer details" aria-controls="customer-context" onClick={() => { if (window.matchMedia("(max-width: 1199px)").matches) setContextDrawerOpen(true); else setDetailsOpen(v => !v); }}><Info className="h-4 w-4" /></Button>
+            <Button id="customer-context-toggle" variant="ghost" aria-label="Customer details" title="Open or close customer details" aria-controls={contextDrawerOpen ? "customer-context-drawer" : "customer-context"} onClick={() => { if (window.matchMedia("(max-width: 1199px)").matches) setContextDrawerOpen(true); else setDetailsOpen(v => !v); }}><Info className="h-4 w-4" /></Button>
             
           </div>
         </header>
@@ -370,7 +369,7 @@ function App() {
       </aside>
 
       <Sheet open={contextDrawerOpen} onOpenChange={setContextDrawerOpen}>
-        <SheetContent className="customer-context-drawer" aria-describedby={undefined}>
+        <SheetContent id="customer-context-drawer" className="customer-context-drawer" overlayClassName="customer-context-backdrop" aria-describedby={undefined} onCloseAutoFocus={e => { e.preventDefault(); document.getElementById("customer-context-toggle")?.focus(); }}>
           <SheetTitle className="sr-only">Customer details</SheetTitle>
           {renderCustomerContext("drawer-contact-note")}
         </SheetContent>
@@ -407,8 +406,8 @@ function RailItem({ icon, label, count, active, onClick, accent, muted }: { icon
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return <div className="px-2 pb-1 pt-4 text-[11px] font-semibold section-caption text-muted-foreground">{children}</div>;
 }
-function IconBtn({ children, onClick, title }: { children: React.ReactNode; onClick?: () => void; title?: string }) {
-  return <Button variant="ghost" aria-label={title} title={title} onClick={onClick} className="rounded-md p-1.5 hover:bg-accent">{children}</Button>;
+function IconBtn({ children, onClick, title, active }: { children: React.ReactNode; onClick?: () => void; title?: string; active?: boolean }) {
+  return <Button variant="ghost" aria-label={title} aria-current={active ? "page" : undefined} title={title} onClick={onClick} className={cn("rounded-md p-1.5 hover:bg-accent", active && "rail-icon-active")}>{children}</Button>;
 }
 function Section({ title, icon, children }: { title: string; icon: React.ReactNode; children: React.ReactNode }) {
   const [openS, setOpen] = useState(true);
