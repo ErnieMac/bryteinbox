@@ -67,9 +67,27 @@
   --canvas: oklch(0.9 0.009 280);
   --workspace-shadow: 0 12px 45px color-mix(in oklab, var(--foreground) 4%, transparent);
   --composer-shadow: 0 3px 14px color-mix(in oklab, var(--foreground) 5%, transparent);
+  --avatar-rose: oklch(0.85 0.09 325);
+  --avatar-lime: oklch(0.88 0.09 115);
+  --avatar-green: oklch(0.84 0.09 155);
+  --platform-slack: oklch(0.43 0.14 330);
+  --platform-linkedin: oklch(0.51 0.14 245);
+  --platform-chat: oklch(0.65 0.16 150);
+  --tag-fill: oklch(0.94 0.015 250);
 }
 
 .workspace-canvas { height: 100dvh; padding: 5.5vh 4vw; background: var(--canvas); }
+[data-platform="slack"] { background: var(--platform-slack); }
+[data-platform="linkedin"] { background: var(--platform-linkedin); }
+[data-platform="imessage"], [data-platform="whatsapp"] { background: var(--platform-chat); }
+[data-platform="x"] { background: var(--foreground); }
+.contact-avatar { background: var(--avatar-rose); }
+.contact-avatar[data-tone="1"] { background: var(--avatar-lime); }
+.contact-avatar[data-tone="2"] { background: var(--avatar-green); }
+[data-tag] { background: var(--tag-fill); color: var(--ring); border-color: var(--ring); }
+[data-tag="Hot lead"] { background: color-mix(in oklab, var(--primary) 9%, var(--card)); color: var(--primary); }
+[data-tag="Team"], [data-tag="Investors"] { background: color-mix(in oklab, var(--avatar-green) 28%, var(--card)); color: var(--platform-chat); }
+.tag-dot { background: currentColor; }
 .chat-workspace { display: flex; height: 100%; max-width: 1600px; margin: auto; overflow: hidden; border-radius: 16px; background: var(--card); box-shadow: var(--workspace-shadow); font-size: 12px; letter-spacing: 0; }
 .chat-workspace button { font-size: inherit; height: auto; white-space: normal; }
 .icon-rail { width: 40px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 15px 3px 10px; background: var(--rail); border-right: 1px solid var(--border); color: var(--muted-foreground); }
