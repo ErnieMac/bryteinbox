@@ -71,10 +71,10 @@ function App() {
     setDraftDismissed((d) => ({ ...d, [id]: true }));
     const undo = () => update(id, (c) => ({ ...c, messages: c.messages.filter((m) => m.id !== msgId) }));
     toast("Message sent", { description: "⌘Z to undo", action: { label: "Undo", onClick: undo } });
-    (window as unknown as { __undo?: () => void }).__undo = undo;
+    (window as unknown as { __undo?: (() => void) | undefined }).__undo = undo;
     setTimeout(() => {
-      const other = active.participants[0];
-      if (other === "You") return;
+      const other = active.participants[0] ?? "";
+      if (!other) return;
       update(id, (c) => ({
         ...c,
         preview: `${other.split(" ")[0]}: 🙌 Sounds good!`,
@@ -88,8 +88,8 @@ function App() {
       const typing = (e.target as HTMLElement).tagName === "TEXTAREA" || (e.target as HTMLElement).tagName === "INPUT";
       if ((e.metaKey || e.ctrlKey) && e.key === "k") { e.preventDefault(); setSwitcher((s) => !s); return; }
       if ((e.metaKey || e.ctrlKey) && e.key === "z" && !typing) {
-        const u = (window as unknown as { __undo?: () => void }).__undo;
-        if (u) { u(); (window as unknown as { __undo?: () => void }).__undo = undefined; toast("Send undone"); }
+        const u = (window as unknown as { __undo?: (() => void) | undefined }).__undo;
+        if (u) { u(); (window as unknown as { __undo?: (() => void) | undefined }).__undo = undefined; toast("Send undone"); }
         return;
       }
       if (e.key === "Escape") setSwitcher(false);

@@ -39,7 +39,7 @@ export type Convo = {
   group: "Reminders" | "Today" | "Yesterday";
   unread: boolean;
   tag?: Tag;
-  suggested?: Tag;
+  suggested?: Tag | undefined;
   vip?: boolean;
   archived?: boolean;
   snoozed?: boolean;
