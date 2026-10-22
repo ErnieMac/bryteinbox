@@ -72,6 +72,7 @@ function App() {
   const [input, setInput] = useState("");
   const [pending, setPending] = useState<PendingSend[]>([]);
   const [dismissedDraft, setDismissedDraft] = useState<Record<string, boolean>>({});
+  const [tagMenuOpen, setTagMenuOpen] = useState(false);
   const timers = useRef(new Map<string, ReturnType<typeof setTimeout>>());
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -177,6 +178,7 @@ function App() {
       if (e.key === "/") { e.preventDefault(); searchRef.current?.focus(); }
       if (e.key === "e" && activeId) archive(activeId);
       if (e.key === "h" && activeId) remind(activeId, reminderPreset("tomorrow"));
+      if (e.key === "t" && activeId) setTagMenuOpen(true);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -365,7 +367,7 @@ function App() {
             </div>
           </div>
           <div className="thread-actions flex shrink-0 items-center gap-1">
-            <TagMenu chat={active} tags={tagsSorted} selected={org.chatTags[active.id] ?? []} onToggle={(id) => store.toggleChatTag(active.id, id)} />
+            <TagMenu chat={active} tags={tagsSorted} selected={org.chatTags[active.id] ?? []} onToggle={(id) => store.toggleChatTag(active.id, id)} open={tagMenuOpen} onOpenChange={setTagMenuOpen} />
             <RemindMenu onPick={(d) => remind(active.id, d)} trigger={<Button variant="ghost" aria-label="Remind me (H)" title="Remind me (H)"><Clock className="h-4 w-4" /></Button>} />
             <IconBtn title={archived.has(active.id) ? "Unarchive (E)" : "Archive (E)"} onClick={() => archive(active.id)}><Archive className="h-4 w-4" /></IconBtn>
             <Button id="customer-context-toggle" variant="ghost" aria-label="Customer details" title="Open or close customer details" aria-controls={contextDrawerOpen ? "customer-context-drawer" : "customer-context"} onClick={() => { if (window.matchMedia("(max-width: 1199px)").matches) setContextDrawerOpen(true); else setDetailsOpen((v) => !v); }}><Info className="h-4 w-4" /></Button>
@@ -497,9 +499,9 @@ function RemindMenu({ trigger, onPick }: { trigger: React.ReactElement; onPick: 
   );
 }
 
-function TagMenu({ chat, tags, selected, onToggle }: { chat: Chat; tags: { id: string; name: string; color: string }[]; selected: string[]; onToggle: (id: string) => void }) {
+function TagMenu({ chat, tags, selected, onToggle, open, onOpenChange }: { chat: Chat; tags: { id: string; name: string; color: string }[]; selected: string[]; onToggle: (id: string) => void; open: boolean; onOpenChange: (open: boolean) => void }) {
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={onOpenChange}>
       <DropdownMenuTrigger asChild><Button variant="ghost" aria-label={`Tag ${chat.title} (T)`} title="Tag (T)"><TagIcon className="h-4 w-4" /></Button></DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Tags</DropdownMenuLabel>
