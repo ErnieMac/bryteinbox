@@ -230,7 +230,7 @@ function App() {
         <div className="flex-1 space-y-5 overflow-y-auto px-6 py-5">
           <div className="text-center text-[11px] text-muted-foreground">Today</div>
           {active.messages.map((m, i) => {
-            const grouped = i > 0 && active.messages[i - 1].from === m.from;
+            const grouped = i > 0 && active.messages[i - 1]?.from === m.from;
             const member = MEMBERS.find((x) => x.name === m.from);
             return (
               <div key={m.id} className={cn("flex gap-3", grouped && "-mt-3", m.me && "flex-row-reverse")}>
@@ -353,7 +353,7 @@ function App() {
   );
 }
 
-function RailItem({ icon, label, count, active, onClick, accent, muted }: { icon: React.ReactNode; label: string; count?: number; active?: boolean; onClick?: () => void; accent?: boolean; muted?: boolean }) {
+function RailItem({ icon, label, count, active, onClick, accent, muted }: { icon: React.ReactNode; label: string; count?: number | undefined; active?: boolean; onClick?: () => void; accent?: boolean; muted?: boolean }) {
   return (
     <button onClick={onClick} className={cn("flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-left", active ? "bg-card font-medium shadow-sm ring-1 ring-border" : "hover:bg-accent", muted && "text-muted-foreground")}>
       {icon}<span className="flex-1 truncate">{label}</span>
