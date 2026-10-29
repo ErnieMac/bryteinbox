@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
+    "build:desktop": "vite build --config vite.desktop.config.ts",
+    "test:desktop": "node --test electron/*.test.cjs",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
