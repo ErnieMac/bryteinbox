@@ -79,7 +79,7 @@ export class BeeperProvider implements MessagingProvider {
       title: c.title ?? participants.find((p) => !p.isSelf)?.name ?? "Chat",
       isGroup: c.type === "group",
       participants,
-      lastMessage: preview ? this.toMessage(preview, id) : undefined,
+      ...(preview ? { lastMessage: this.toMessage(preview, id) } : {}),
       unreadCount: Number(c.unreadCount ?? 0),
       updatedAt,
     };

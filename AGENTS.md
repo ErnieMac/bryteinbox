@@ -20,3 +20,4 @@
 - Keep the public inbox explicitly sample-only and private account pages under the managed authenticated layout; this avoids presenting mock chats as secure live messaging.
 - Profile operations use authenticated server functions and owner-scoped RLS, with one root auth subscriber and cache teardown on sign-out; this prevents cross-user profile exposure.
 - Beeper and Unipile remain setup-needed until secure per-user credentials and reachable endpoints exist; never substitute a shared provider account for individual connections.
+- `messagingProvider` (src/providers/index.ts) delegates per call to BeeperProvider when a Beeper Desktop token is saved in this browser, else MockProvider; Unipile will join the same switch so the UI never changes.
