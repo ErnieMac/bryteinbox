@@ -268,7 +268,6 @@ function App() {
         ))}
         <div className="mt-auto" />
         <RailTip label="Settings"><Button asChild variant="ghost" size="icon" aria-label="Settings"><Link to="/settings"><Settings /></Link></Button></RailTip>
-        <RailTip label={user ? 'Your account' : 'Sign in'}><Button variant="ghost" size="icon" asChild><Link to={user ? '/account' : '/auth'} aria-label={user ? 'Your account' : 'Sign in'}><User size={20} /></Link></Button></RailTip>
       </aside>
 
       <aside className="navigation-pane flex shrink-0 flex-col border-r bg-rail px-2.5 py-3">

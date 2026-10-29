@@ -17,7 +17,7 @@
 - All chat data flows through the MessagingProvider interface in src/providers (exported `messagingProvider`); components never import mock data directly, so Beeper/Unipile providers can be swapped in.
 - Tags, reminders and archive state live only in src/lib/organiser-store.ts (localStorage today); this keeps a later move to a database in one place.
 - Inbox screens read provider data through the query hooks in src/hooks/use-inbox.ts and organiser state through useOrganiser; this keeps loading/error handling and cache refresh in one place.
-- Keep the public inbox explicitly sample-only and private account pages under the managed authenticated layout; this avoids presenting mock chats as secure live messaging.
+- Sign-in is hidden for personal use: no UI links to /auth or /account, but the auth routes and profile backend stay intact so accounts can return for monetisation.
 - Profile operations use authenticated server functions and owner-scoped RLS, with one root auth subscriber and cache teardown on sign-out; this prevents cross-user profile exposure.
 - Beeper and Unipile remain setup-needed until secure per-user credentials and reachable endpoints exist; never substitute a shared provider account for individual connections.
 - `messagingProvider` (src/providers/index.ts) delegates per call to BeeperProvider when a Beeper Desktop token is saved in this browser, else MockProvider; Unipile will join the same switch so the UI never changes.
