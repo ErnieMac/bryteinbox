@@ -27,7 +27,6 @@ function Integrations() {
         <p className="mt-2 text-muted-foreground">No live messaging accounts are connected. The inbox still contains sample conversations.</p>
         <section className="mt-10 border-t pt-6"><h2 className="flex items-center gap-2 text-xl font-semibold"><Monitor size={20} /> Beeper</h2><p className="mt-3 text-muted-foreground">Requires Beeper Desktop running on your computer, an API token and a secure relay. Its local API is not reachable by this hosted app by default. Do not expose it directly to the internet.</p><a className="mt-3 inline-block text-sm underline" href="https://developers.beeper.com/desktop-api" target="_blank" rel="noreferrer">Beeper API documentation</a></section>
         <section className="mt-8 border-t pt-6"><h2 className="flex items-center gap-2 text-xl font-semibold"><Cloud size={20} /> Unipile</h2><p className="mt-3 text-muted-foreground">Requires a Unipile subscription, your API endpoint and a private API key. Account linking and message sync are not enabled yet.</p><a className="mt-3 inline-block text-sm underline" href="https://developer.unipile.com/docs/hosted-auth" target="_blank" rel="noreferrer">Unipile connection documentation</a></section>
-        <Button variant="outline" className="mt-8" asChild><Link to={user ? '/account' : '/auth'}>{user ? 'Your account' : 'Sign in to your account'}</Link></Button>
       </div>
     </div>
   );
