@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { accountsQuery, useOrganiser } from "@/hooks/use-inbox";
 import type { Tag } from "@/lib/organiser-store";
 import { useAuth } from '@/providers/auth';
+import { BeeperConnect } from "@/components/quicker/BeeperConnect";
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
@@ -39,6 +40,7 @@ function Settings() {
         <h1 className="text-3xl font-semibold">Settings</h1>
         <p className="mt-2 text-muted-foreground">Connected accounts, tags and AI suggested drafts.</p>
         <Button className="mt-5" variant="outline" asChild><Link to={user ? '/account' : '/auth'}>{user ? 'Your account & providers' : 'Sign in to your account'}</Link></Button>
+        <BeeperConnect />
         <AccountsSection />
         <TagsSection />
       </div>
