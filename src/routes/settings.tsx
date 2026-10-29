@@ -58,7 +58,7 @@ function AccountsSection() {
           <Link to="/integrations"><Plug /> Setup guides</Link>
         </Button>
       </div>
-      <p className="mt-1 text-sm text-muted-foreground">Sample accounts for now — real connections come with the Beeper or Unipile provider.</p>
+      <p className="mt-1 text-sm text-muted-foreground">Accounts linked through Beeper on this computer.</p>
       <div className="mt-4 space-y-3">
         {accounts.isPending ? (
           [0, 1, 2].map((i) => (

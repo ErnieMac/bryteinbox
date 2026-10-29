@@ -58,7 +58,7 @@ function Auth() {
   };
   return <main className="min-h-screen bg-background px-6 py-12">
     <div className="mx-auto max-w-sm">
-      <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground"><ArrowLeft size={16} /> Sample inbox</Link>
+      <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground"><ArrowLeft size={16} /> Inbox</Link>
       <MessagesSquare className="mt-12 h-9 w-9 text-primary" />
       <h1 className="mt-4 text-3xl font-semibold">BryteInbox</h1>
       <h2 className="mt-2 text-lg text-muted-foreground">{mode === 'signup' ? 'Create your account' : mode === 'forgot' ? 'Reset your password' : 'Welcome back'}</h2>

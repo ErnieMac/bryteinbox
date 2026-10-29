@@ -34,7 +34,7 @@ function Account() {
   const [saved, setSaved] = useState(false);
   const mutation = useMutation({ mutationFn: save, onSuccess: (result) => { queryClient.setQueryData(['personal-profile'], result); setSaved(true); }, onError: (e) => setError(e.message) });
   return <main className="settings-page min-h-screen bg-background px-6 py-10"><div className="mx-auto max-w-3xl">
-    <div className="flex flex-wrap items-center justify-between gap-3"><Link to="/" className="inline-flex items-center gap-2 text-muted-foreground"><ArrowLeft size={16} /> Sample inbox</Link><Button variant="outline" onClick={() => { void signOut().catch(e => setError(e.message)); }}><LogOut size={16} /> Sign out</Button></div>
+    <div className="flex flex-wrap items-center justify-between gap-3"><Link to="/" className="inline-flex items-center gap-2 text-muted-foreground"><ArrowLeft size={16} /> Inbox</Link><Button variant="outline" onClick={() => { void signOut().catch(e => setError(e.message)); }}><LogOut size={16} /> Sign out</Button></div>
     <h1 className="mt-8 text-3xl font-semibold">Your account</h1><p className="mt-2 break-all text-sm text-muted-foreground">{user?.email}</p>
     <section className="mt-10" aria-labelledby="profile-heading"><h2 id="profile-heading" className="flex items-center gap-2 text-xl font-semibold"><UserRound size={20} /> Personal profile</h2>
       <form className="mt-5 max-w-lg space-y-5" onSubmit={e => { e.preventDefault(); setError(''); setSaved(false); const parsed = profileSchema.safeParse({ displayName: name, avatarUrl: avatar }); if (!parsed.success) { setError(parsed.error.issues[0]?.message ?? 'Check your profile.'); return; } mutation.mutate({ data: parsed.data }); }}>
