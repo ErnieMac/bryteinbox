@@ -22,6 +22,8 @@ BryteInbox is a fast, keyboard-first web app for personal use. It reads your cha
 1. **Beeper Desktop** — free, from [beeper.com](https://www.beeper.com). Sign in and add the messaging accounts you want in BryteInbox.
 2. **Node.js 20 or newer** — only needed to run BryteInbox itself (see below).
 
+No accounts, API keys or cloud services are needed — BryteInbox runs entirely on your computer.
+
 ## Run it on your computer
 
 ```sh
