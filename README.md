@@ -20,9 +20,44 @@ BryteInbox is a fast, keyboard-first web app for personal use. It reads your cha
 ## Requirements
 
 1. **Beeper Desktop** — free, from [beeper.com](https://www.beeper.com). Sign in and add the messaging accounts you want in BryteInbox.
-2. **Node.js 20 or newer** — only needed to run BryteInbox itself (see below).
+2. **Node.js 24 or newer** — only needed when running from source. Mac release downloads include their own runtime.
 
 No BryteInbox account, cloud service or environment file is needed. The only credential required is your Beeper Desktop access token, entered locally during setup.
+
+## Download and install on macOS
+
+Once a maintainer publishes a release, open this repository's **Releases** tab:
+
+1. Download `BryteInbox-VERSION-macOS-arm64.zip` for **Apple silicon (M1 or newer)**, or `BryteInbox-VERSION-macOS-x64.zip` for **Intel**. Find your chip under **Apple menu → About This Mac**.
+2. Unzip the download and drag **BryteInbox.app** into **Applications**.
+3. Open Beeper Desktop, then BryteInbox. Follow the Get started walkthrough and enter your Beeper Desktop access token.
+
+These releases are **ad-hoc signed, not Apple-notarized**. Only install a build from a repository and maintainer you trust. If macOS blocks it, review **System Settings → Privacy & Security → Open Anyway** after trying to open the app. Some managed Macs prohibit this. Do not disable Gatekeeper globally. Downloads include `SHA256SUMS.txt` for integrity checks; checksums do not replace publisher verification.
+
+The desktop app bundles its own screens and talks to Beeper only on this computer. It does not load the published website. Beeper tokens and tags stay in the desktop app's local storage; they are separate from your browser installation. Beeper must remain running. Windows desktop releases are not included in this workflow; Windows users can run the browser version from source.
+
+### Publish a GitHub release (maintainers)
+
+The **macOS releases** workflow builds Apple silicon and Intel apps, runs the tests, and uploads both ZIPs plus checksums to a GitHub Release.
+
+```sh
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+Use `vMAJOR.MINOR.PATCH` tags. You can also open **Actions → macOS releases → Run workflow** and supply an existing version tag. The workflow uses GitHub's automatic token; no cloud credentials, environment file or Apple signing secrets are required. Enable GitHub Actions in the repository if it is disabled. A release is published only after both architecture builds succeed. Rerunning a release replaces its downloads.
+
+To package locally on a Mac with Bun installed:
+
+```sh
+bun install --frozen-lockfile
+bun run test
+bun run test:desktop
+bun run build:desktop
+node scripts/package-macos.mjs arm64 1.0.0
+```
+
+Use `x64` instead of `arm64` for Intel. ZIPs appear in `release/`. The GitHub workflow must complete before any download exists; signing with an Apple Developer identity and notarization are future work.
 
 ## Run it on your computer
 
