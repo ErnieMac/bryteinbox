@@ -22,7 +22,7 @@ BryteInbox is a fast, keyboard-first web app for personal use. It reads your cha
 1. **Beeper Desktop** — free, from [beeper.com](https://www.beeper.com). Sign in and add the messaging accounts you want in BryteInbox.
 2. **Node.js 20 or newer** — only needed to run BryteInbox itself (see below).
 
-No accounts, API keys or cloud services are needed — BryteInbox runs entirely on your computer.
+No BryteInbox account, cloud service or environment file is needed. The only credential required is your Beeper Desktop access token, entered locally during setup.
 
 ## Run it on your computer
 
@@ -65,7 +65,7 @@ npm run preview
 - Built with [TanStack Start](https://tanstack.com/start) (React 19), Tailwind CSS v4 and TanStack Query.
 - All chats and messages flow through a single `MessagingProvider` interface (`src/providers`); `BeeperProvider` talks to Beeper Desktop's local API.
 - Tags, reminders and archived state live in a separate `OrganiserStore` (`src/lib/organiser-store.ts`) using browser localStorage, ready to move to a database later.
-- Optional sign-in and profile storage exist behind the scenes but are hidden for personal use.
+- No application sign-in, profile storage or database connection is included in the personal-use app. Hosted accounts can be added later alongside Unipile.
 
 ## Privacy
 

@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Monitor, Cloud } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAuth } from '@/providers/auth';
 
 export const Route = createFileRoute("/integrations")({
   head: () => ({
@@ -18,7 +17,6 @@ export const Route = createFileRoute("/integrations")({
 });
 
 function Integrations() {
-  const { user } = useAuth();
   return (
     <div className="settings-page min-h-screen bg-background">
       <div className="mx-auto max-w-3xl px-6 py-10">

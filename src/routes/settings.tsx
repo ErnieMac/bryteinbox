@@ -10,7 +10,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { accountsQuery, useOrganiser } from "@/hooks/use-inbox";
 import type { Tag } from "@/lib/organiser-store";
-import { useAuth } from '@/providers/auth';
 import { BeeperConnect } from "@/components/quicker/BeeperConnect";
 
 export const Route = createFileRoute("/settings")({
@@ -30,7 +29,6 @@ export const Route = createFileRoute("/settings")({
 const TAG_COLORS = ["#F59E0B", "#3B82F6", "#10B981", "#EC4899", "#8B5CF6", "#EF4444", "#14B8A6", "#9CA3AF"];
 
 function Settings() {
-  const { user } = useAuth();
   return (
     <div className="settings-page min-h-screen bg-background">
       <div className="mx-auto max-w-3xl px-6 py-10">
