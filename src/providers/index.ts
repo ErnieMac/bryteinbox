@@ -1,5 +1,4 @@
 import type { MessagingProvider } from "./MessagingProvider";
-import { MockProvider } from "./MockProvider";
 import { BeeperProvider, type BeeperConfig } from "./BeeperProvider";
 
 export type { MessagingProvider } from "./MessagingProvider";
@@ -27,15 +26,22 @@ export function testBeeper(cfg: BeeperConfig) {
   return new BeeperProvider(cfg).listAccounts();
 }
 
-const mock = new MockProvider({ latencyMs: 350 });
+/** Used before any account is connected: no chats, nothing to send to. */
+const empty: MessagingProvider = {
+  listAccounts: async () => [],
+  listChats: async () => [],
+  getMessages: async () => ({ messages: [], nextCursor: null }),
+  sendMessage: async () => { throw new Error("Connect an account first"); },
+  markRead: async () => {},
+};
 
-/** Uses Beeper when set up on this device, otherwise sample data. Unipile slots in here later. */
+/** Uses Beeper when set up on this device, otherwise nothing. Unipile slots in here later. */
 function current(): MessagingProvider {
   const cfg = readBeeperConfig();
-  return cfg ? new BeeperProvider(cfg) : mock;
+  return cfg ? new BeeperProvider(cfg) : empty;
 }
 
-export const activeProviderName = (): "beeper" | "sample" => (readBeeperConfig() ? "beeper" : "sample");
+export const activeProviderName = (): "beeper" | "none" => (readBeeperConfig() ? "beeper" : "none");
 
 export const messagingProvider: MessagingProvider = {
   listAccounts: () => current().listAccounts(),

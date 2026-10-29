@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { readBeeperConfig } from "@/providers";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import {
@@ -59,6 +60,8 @@ const otherPeople = (c: Chat) => c.participants.filter((p) => !p.isSelf);
 
 function App() {
   const { user } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => { if (!readBeeperConfig()) navigate({ to: "/welcome", replace: true }); }, [navigate]);
   const { state: org, store } = useOrganiser();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [view, setView] = useState<View>("inbox");
@@ -301,7 +304,7 @@ function App() {
 
       <section className="conversation-pane flex shrink-0 flex-col border-r bg-pane">
         <header className="list-header flex items-center gap-2 px-4 pb-2 pt-4">
-          <h1 className="min-w-0 truncate text-sm font-semibold leading-none">{heading}</h1><span className="text-xs text-muted-foreground">Sample</span>
+          <h1 className="min-w-0 truncate text-sm font-semibold leading-none">{heading}</h1>
           {chats.isFetching && !chats.isPending && <RotateCw className="ml-auto h-3.5 w-3.5 animate-spin text-muted-foreground" aria-label="Refreshing" />}
         </header>
         <div className="px-4 pb-2">
