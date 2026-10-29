@@ -19,5 +19,6 @@
 - Inbox screens read provider data through the query hooks in src/hooks/use-inbox.ts and organiser state through useOrganiser; this keeps loading/error handling and cache refresh in one place.
 - The personal-use app has no auth routes, profile operations, cloud client imports or database tooling; this keeps public GitHub installs independent of backend keys and environment files.
 - Do not import managed backend integration files into the app; hosted database removal and managed configuration cleanup are handled through the workspace database settings.
+- Exclude unused managed cloud integration files from the personal app's TypeScript project; these platform-owned files remain until workspace database removal and are not bundled by any app import.
 - Beeper and Unipile remain setup-needed until secure per-user credentials and reachable endpoints exist; never substitute a shared provider account for individual connections.
 - `messagingProvider` (src/providers/index.ts) delegates per call to BeeperProvider when a Beeper Desktop token is saved in this browser, otherwise an empty provider; Unipile can join the same switch so the UI never changes.
