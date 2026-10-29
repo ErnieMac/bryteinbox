@@ -17,8 +17,8 @@
 - All chat data flows through the MessagingProvider interface in src/providers (exported `messagingProvider`); components never import mock data directly, so Beeper/Unipile providers can be swapped in.
 - Tags, reminders and archive state live only in src/lib/organiser-store.ts (localStorage today); this keeps a later move to a database in one place.
 - Inbox screens read provider data through the query hooks in src/hooks/use-inbox.ts and organiser state through useOrganiser; this keeps loading/error handling and cache refresh in one place.
-- Sign-in is hidden for personal use: no UI links to /auth or /account, but the auth routes and profile backend stay intact so accounts can return for monetisation.
-- The app must run from a fresh clone with no backend env vars: guard all Supabase client access behind `hasBackend` (src/providers/auth.tsx); this keeps public GitHub installs working without keys.
-- Profile operations use authenticated server functions and owner-scoped RLS, with one root auth subscriber and cache teardown on sign-out; this prevents cross-user profile exposure.
+- The personal-use app has no auth routes, profile operations, cloud client imports or database tooling; this keeps public GitHub installs independent of backend keys and environment files.
+- Do not import managed backend integration files into the app; hosted database removal and managed configuration cleanup are handled through the workspace database settings.
+- Exclude unused managed cloud integration files from the personal app's TypeScript project; these platform-owned files remain until workspace database removal and are not bundled by any app import.
 - Beeper and Unipile remain setup-needed until secure per-user credentials and reachable endpoints exist; never substitute a shared provider account for individual connections.
-- `messagingProvider` (src/providers/index.ts) delegates per call to BeeperProvider when a Beeper Desktop token is saved in this browser, else MockProvider; Unipile will join the same switch so the UI never changes.
+- `messagingProvider` (src/providers/index.ts) delegates per call to BeeperProvider when a Beeper Desktop token is saved in this browser, otherwise an empty provider; Unipile can join the same switch so the UI never changes.

@@ -13,7 +13,6 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider } from '@/providers/auth';
 import { Toaster } from 'sonner';
 
 function NotFoundComponent() {
@@ -124,7 +123,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <AuthProvider><TooltipProvider delayDuration={200}><Outlet /><Toaster position="bottom-center" /></TooltipProvider></AuthProvider>
+      <TooltipProvider delayDuration={200}><Outlet /><Toaster position="bottom-center" /></TooltipProvider>
     </QueryClientProvider>
   );
 }

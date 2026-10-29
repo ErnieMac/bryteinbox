@@ -19,7 +19,6 @@ import {
 import { PLATFORMS, type Chat, type Message, type Platform } from "@/providers";
 import { reminderPreset } from "@/lib/organiser-store";
 import { accountsQuery, chatsQuery, messagesQuery, useMarkRead, useOrganiser, useSendMessage } from "@/hooks/use-inbox";
-import { useAuth } from '@/providers/auth';
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -59,7 +58,6 @@ function dayLabel(iso: string) {
 const otherPeople = (c: Chat) => c.participants.filter((p) => !p.isSelf);
 
 function App() {
-  const { user } = useAuth();
   const navigate = useNavigate();
   useEffect(() => { if (!readBeeperConfig()) navigate({ to: "/welcome", replace: true }); }, [navigate]);
   const { state: org, store } = useOrganiser();
