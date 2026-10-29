@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DEFAULT_BEEPER_URL, readBeeperConfig, saveBeeperConfig, testBeeper } from "@/providers";
 
-export function BeeperConnect() {
+export function BeeperConnect({ onConnected }: { onConnected?: () => void } = {}) {
   const qc = useQueryClient();
   const [connected, setConnected] = useState(false);
   const [url, setUrl] = useState(DEFAULT_BEEPER_URL);
@@ -24,6 +24,7 @@ export function BeeperConnect() {
       saveBeeperConfig({ baseUrl: url, token: token.trim() });
       setConnected(true); setToken("");
       qc.invalidateQueries();
+      onConnected?.();
       toast.success(`Connected to Beeper — ${accounts.length} account${accounts.length === 1 ? "" : "s"} found`);
     } catch {
       toast.error("Couldn't reach Beeper. Check Beeper Desktop is open, the API is switched on, and the token is right.");
@@ -33,7 +34,7 @@ export function BeeperConnect() {
   function disconnect() {
     saveBeeperConfig(null); setConnected(false);
     qc.invalidateQueries();
-    toast("Disconnected — showing sample chats again");
+    toast("Disconnected — connect again to see your chats");
   }
 
   return (
