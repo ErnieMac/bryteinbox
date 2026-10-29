@@ -1,5 +1,9 @@
 # Roadmap
 
+- [ ] Add local desktop packaging and tagged GitHub macOS release workflow.
+- [ ] Document Mac downloads, installation and unsigned-release limitations.
+- [ ] Verify release scripts and existing app tests.
+
 - [x] Remove application backend/auth/profile dependencies and database tooling.
 - [x] Verify local onboarding and Settings without cloud requests.
 - [ ] Remove hosted database and managed keys/environment configuration — requires workspace admin's Remove Database action.
