@@ -1,59 +1,84 @@
 # BryteInbox
 
-Build a pixel-faithful personal clone of Quicker Chat matching the provided reference screenshot and product concept (quicker.chat).
+One calm inbox for all your direct messages — iMessage, WhatsApp, LinkedIn, Instagram, Telegram, Slack and X — on your own Mac or Windows PC.
 
-Design & Layout (Cream/warm editorial Mac aesthetic matching the screenshot):
-1. Three-plus-one pane Mac-style layout:
-   - Left Navigation Rail (warm off-white/beige tint):
-     - Top brand badge with Quicker Chat icon + text.
-     - Section 1: Inbox (with unread badge '8'), Triage ('2'), Reminders ('1'), Requests ('37'), Archive, Muted, Media.
-     - Section 2: Platforms with original brand badges and counts: iMessage (1), LinkedIn (25), Slack (1), WhatsApp (2), X (15).
-     - Section 3: Tags with pills/icons: Client (2), Hot lead (1), Sponsors, Investors, Hiring, Team (1), Personal (1), "+ New tag", Hidden (2).
-     - Bottom: Settings, Send Feedback.
-   - Conversation List Pane:
-     - Header: "Inbox" heading with "Focus" toggle switch and filter icon button.
-     - Quick-access avatar strip at the top with status labels ("Sounds great...", badges for LinkedIn, Slack, WhatsApp: Sarah Lim, Design crew, Mum).
-     - Categorized groups ("Reminders", "Today", etc.) with conversation cards showing avatar, platform badge overlay, sender name, timestamp, message preview, tag badge (e.g. "Sponsors", "Team", "Client", "Hot lead", "Personal", "Suggested: Hot lead"), and unread orange indicators.
-   - Message Thread Pane (main conversation view):
-     - Header: conversation title (#launch-week / contact name), participants list, search/details/action buttons.
-     - Message feed with timestamps, avatar groupings, rich attachments (like the quicker.chat promo card with banner, beehiiv cross-promo link card, thread reply cards, emoji reactions pill like 👍2 🤝1 👏1 🔥3).
-     - Inline AI draft bar: "Tab Perfect timing. I'll go through the brief today and get our assets over to the beehiiv team!" with Tab-to-accept or edit, formatting tools (emoji, bullet, clean draft), and a send button with delivery timing indicator.
-   - Right Context / Inspector Sidebar:
-     - Header: Channel/Contact badge + Team/Platform badge, action icons (bell mute, pin, note, hash, settings).
-     - Collapsible sections:
-       - Members (with avatars, names, roles e.g. Jess Park - Design lead, Andre Ruiz - Partnerships, Leo Tanaka - Editor).
-       - Threads (Unread threads list with previews, timestamps, reply counts).
-       - Media (shared links, attachments).
-       - AI Summary (auto-generated bullets: "Landing page went live this morning.", "Graphic v2 posted, beehiiv cross-promo confirmed.", "Final email pass waits on you.").
-       - Actions.
+BryteInbox is a fast, keyboard-first web app for personal use. It reads your chats from [Beeper Desktop](https://www.beeper.com), a free app that unifies your messaging accounts, and presents them in a clean three-column workspace with tags, reminders, archiving and AI-suggested replies.
 
-Interactions & Features:
-- Filter conversations by clicking any Platform (Slack, LinkedIn, WhatsApp, X, iMessage) or Tag (Client, Hot lead, Team, Personal).
-- Search bar across all DMs.
-- Focus mode toggle (filters down to high-priority/VIP messages).
-- Keyboard shortcuts: Tab to insert AI draft, ⌘K for quick switcher, J/K navigation between threads, ⌘Z undo send toast notification.
-- Simulated message send & receive, tagging, archiving, and snoozing/reminders.
-- An "Integrations & Connectors" view accessible from Settings to set up real accounts (e.g. Slack bot webhook/OAuth, LinkedIn via connector, WhatsApp Cloud API) with helpful setup guides.
+> **Private by design:** BryteInbox runs entirely in your browser on your computer. It talks directly to the Beeper Desktop app running on the same machine. Your Beeper access token and your messages never leave your computer — there is no server that stores them.
 
-This project was built with [Lovable](https://lovable.dev).
+![BryteInbox](public/icon-512.png)
 
-**Live app**: https://bryteinbox.lovable.app
+## What it does
+
+- **One inbox for 7 platforms** — every conversation shows a small platform icon so you always know where a message came from. Filter the list by platform or tag, and search across all chats.
+- **Three-column workspace** — navigation rail and tag folders on the left, conversation list in the middle, full message thread with a contact-details panel on the right. Collapses cleanly to smaller screens.
+- **Organise your way** — create tags (Leads, Clients, Team, Personal, or your own), give them colours, drag a chat onto a tag to retag it, set reminders ("later today", "tomorrow", "next week", or a custom time), and archive anything you're done with. All of it is saved on your computer and survives a refresh.
+- **AI suggested replies (optional)** — turn on "AI suggested drafts" for a tag, and chats with that tag show a greyed "Suggested reply" card above the composer with Use / Edit / Dismiss. Nothing ever sends automatically.
+- **Keyboard-first** — `J`/`K` move between chats, `Enter` opens one, `R` jumps to reply, `E` archives, `H` sets a reminder, `T` opens the tag picker, `/` jumps to search, `⌘K`/`Ctrl+K` opens quick search, and `⌘Z`/`Ctrl+Z` undoes a send within a 5-second send window.
+- **Installable app** — works as a PWA, so you can install it to your dock or taskbar and run it like a native desktop app.
+
+## Requirements
+
+1. **Beeper Desktop** — free, from [beeper.com](https://www.beeper.com). Sign in and add the messaging accounts you want in BryteInbox.
+2. **Node.js 20 or newer** — only needed to run BryteInbox itself (see below).
+
+## Run it on your computer
+
+```sh
+git clone https://github.com/YOUR_USERNAME/bryteinbox.git
+cd bryteinbox
+npm install
+npm run dev
+```
+
+Then open the printed address (by default `http://localhost:8080`) in your browser.
+
+### Connect your first account
+
+1. In **Beeper Desktop**, open **Settings → Developers** and switch on the API.
+2. Create an **access token** there and copy it.
+3. BryteInbox opens with a short **Get started** walkthrough — paste the token in, and your real chats appear.
+4. Once connected, use the **install** option in your browser (Chrome: *Install app*; Safari/Edge: *Add to Dock / Install*) to run BryteInbox like a normal desktop app.
+
+Notes:
+
+- The connection is per-computer: Beeper Desktop must stay open while you use BryteInbox, and you connect once on each computer you use.
+- The token is stored only in your browser on that computer and is sent nowhere except your own machine.
+
+### Optional: production build
+
+```sh
+npm run build
+npm run preview
+```
+
+## Roadmap
+
+- **Now** — personal use via Beeper Desktop, everything local.
+- **Next** — [Unipile](https://unipile.com) as a second connection option (hosted, no desktop app needed), which also unlocks multi-user and hosted setups.
+- **Later** — accounts, plans and team features for a hosted, monetised product. The code already separates providers (`MessagingProvider` interface) from the UI, so switching or adding a provider doesn't change how the app looks or works.
+
+## Technical notes
+
+- Built with [TanStack Start](https://tanstack.com/start) (React 19), Tailwind CSS v4 and TanStack Query.
+- All chats and messages flow through a single `MessagingProvider` interface (`src/providers`); `BeeperProvider` talks to Beeper Desktop's local API.
+- Tags, reminders and archived state live in a separate `OrganiserStore` (`src/lib/organiser-store.ts`) using browser localStorage, ready to move to a database later.
+- Optional sign-in and profile storage exist behind the scenes but are hidden for personal use.
+
+## Privacy
+
+- Messages, accounts and your Beeper token stay on your computer.
+- No analytics, no message storage on any server.
+- Disconnect Beeper at any time in Settings; BryteInbox then shows nothing and sends nothing.
+
+## Feedback & contributing
+
+This started as a personal project. Ideas and pull requests are welcome — open an issue to discuss what you'd like to see.
 
 ## Build with Lovable
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/4e1013fc-59e7-40ab-a1f9-ea9cdf95b068).
+This project was built with [Lovable](https://lovable.dev). Continue developing it in the [Lovable editor](https://lovable.dev/projects/4e1013fc-59e7-40ab-a1f9-ea9cdf95b068).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
 - **Stay in sync**: every change made in Lovable is committed straight to this repository.
 - **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
