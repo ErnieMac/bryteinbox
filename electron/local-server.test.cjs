@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
+const http = require('node:http');
 const { createLocalServer } = require('./local-server.cjs');
 
 test('local bundle serves assets and falls back for inbox/settings routes', async () => {
@@ -16,7 +17,11 @@ test('local bundle serves assets and falls back for inbox/settings routes', asyn
     assert.equal(await (await fetch(`http://127.0.0.1:${port}/settings`)).text(), '<h1>Local app</h1>');
     assert.equal((await fetch(`http://127.0.0.1:${port}/app.js`)).status, 200);
     assert.equal((await fetch(`http://127.0.0.1:${port}/missing.js`)).status, 404);
-    assert.equal((await fetch(`http://127.0.0.1:${port}/`, { headers: { Host: 'untrusted.example' } })).status, 403);
+    const rejectedHost = await new Promise((resolve, reject) => {
+      const req = http.get({ hostname: '127.0.0.1', port, path: '/', headers: { Host: 'untrusted.example' } }, res => { res.resume(); resolve(res.statusCode); });
+      req.on('error', reject);
+    });
+    assert.equal(rejectedHost, 403);
     assert.equal((await fetch(`http://127.0.0.1:${port}/`, { method: 'POST' })).status, 403);
   } finally {
     await new Promise(resolve => server.close(resolve));
