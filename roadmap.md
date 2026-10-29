@@ -1,5 +1,9 @@
 # Roadmap
 
+- [ ] Remove application backend/auth/profile dependencies and database tooling.
+- [ ] Verify local onboarding and Settings without cloud requests.
+- [ ] Remove hosted database and managed keys/environment configuration — requires workspace admin's Remove Database action.
+
 - [x] Add sign-in, sign-out, password recovery and a private personal profile.
 - [x] Add Beeper and Unipile setup-needed pages without implying sample accounts are live.
 - [x] Verify password sign-in, profile save/reload, cross-user isolation and sign-out.
