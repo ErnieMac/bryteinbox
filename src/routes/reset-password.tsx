@@ -7,8 +7,8 @@ import { Label } from '@/components/ui/label';
 
 export const Route = createFileRoute('/reset-password')({
   head: () => ({ meta: [
-    { title: 'Reset password · BryteChat' }, { name: 'description', content: 'Set a new password for your BryteChat account.' },
-    { property: 'og:title', content: 'Reset password · BryteChat' }, { property: 'og:description', content: 'Recover access to your personal workspace.' },
+    { title: 'Reset password · BryteInbox' }, { name: 'description', content: 'Set a new password for your BryteInbox account.' },
+    { property: 'og:title', content: 'Reset password · BryteInbox' }, { property: 'og:description', content: 'Recover access to your personal workspace.' },
     { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary_large_image' },
   ] }), component: ResetPassword,
 });
