@@ -11,7 +11,8 @@ export type OrganiserState = {
   archived: string[]; // chatIds
 };
 
-const KEY = "brytechat.organiser.v1";
+const KEY = "bryteinbox.organiser.v1";
+const LEGACY_KEY = "brytechat.organiser.v1";
 
 const DEFAULT_TAGS: Tag[] = [
   { id: "leads", name: "Leads", color: "#F59E0B", order: 0, aiDrafts: false },
@@ -112,12 +113,22 @@ export class OrganiserStore {
   }
   private load(): OrganiserState {
     try {
-      const raw = this.storage?.getItem(KEY);
+      const raw = this.storage?.getItem(KEY) ?? this.migrateLegacy();
       if (raw) return { ...empty(), ...JSON.parse(raw) };
     } catch {
       /* corrupted storage: fall back to defaults */
     }
     return empty();
+  }
+
+  /** Carries state saved under the pre-rename storage key into the current one. */
+  private migrateLegacy(): string | null {
+    const raw = this.storage?.getItem(LEGACY_KEY) ?? null;
+    if (raw) {
+      this.storage?.setItem(KEY, raw);
+      this.storage?.removeItem(LEGACY_KEY);
+    }
+    return raw;
   }
 }
 

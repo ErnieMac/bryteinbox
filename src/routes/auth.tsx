@@ -11,8 +11,8 @@ import { useAuth } from '@/providers/auth';
 
 export const Route = createFileRoute('/auth')({
   head: () => ({ meta: [
-    { title: 'Sign in · BryteChat' }, { name: 'description', content: 'Sign in to your personal BryteChat account.' },
-    { property: 'og:title', content: 'Sign in · BryteChat' }, { property: 'og:description', content: 'Your personal messaging workspace.' },
+    { title: 'Sign in · BryteInbox' }, { name: 'description', content: 'Sign in to your personal BryteInbox account.' },
+    { property: 'og:title', content: 'Sign in · BryteInbox' }, { property: 'og:description', content: 'Your personal messaging workspace.' },
     { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary_large_image' },
   ] }),
   component: Auth,
@@ -60,7 +60,7 @@ function Auth() {
     <div className="mx-auto max-w-sm">
       <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground"><ArrowLeft size={16} /> Sample inbox</Link>
       <MessagesSquare className="mt-12 h-9 w-9 text-primary" />
-      <h1 className="mt-4 text-3xl font-semibold">BryteChat</h1>
+      <h1 className="mt-4 text-3xl font-semibold">BryteInbox</h1>
       <h2 className="mt-2 text-lg text-muted-foreground">{mode === 'signup' ? 'Create your account' : mode === 'forgot' ? 'Reset your password' : 'Welcome back'}</h2>
       <form onSubmit={submit} className="mt-8 space-y-5">
         {mode === 'signup' && <div className="space-y-2"><Label htmlFor="display-name">Display name</Label><Input id="display-name" value={name} onChange={e => setName(e.target.value)} required maxLength={100} autoComplete="name" /></div>}

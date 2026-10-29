@@ -15,9 +15,9 @@ import { useAuth } from '@/providers/auth';
 export const Route = createFileRoute("/settings")({
   head: () => ({
     meta: [
-      { title: "Settings · BryteChat" },
-      { name: "description", content: "Manage connected accounts, tags and AI suggested drafts in BryteChat." },
-      { property: "og:title", content: "Settings · BryteChat" },
+      { title: "Settings · BryteInbox" },
+      { name: "description", content: "Manage connected accounts, tags and AI suggested drafts in BryteInbox." },
+      { property: "og:title", content: "Settings · BryteInbox" },
       { property: "og:description", content: "Manage connected accounts, tags and AI suggested drafts." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

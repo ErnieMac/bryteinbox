@@ -40,6 +40,14 @@ describe("OrganiserStore", () => {
     expect(r.sortedTags()[0]!.id).toBe("noise");
     expect(r.isArchived("c1")).toBe(true);
   });
+  it("carries state saved under the old brytechat key into the new one", () => {
+    localStorage.setItem("brytechat.organiser.v1", JSON.stringify({ tags: [], chatTags: { c1: ["leads"] }, reminders: {}, archived: ["c1"] }));
+    const s = new OrganiserStore(localStorage);
+    expect(s.tagsFor("c1")).toEqual(["leads"]);
+    expect(s.isArchived("c1")).toBe(true);
+    expect(localStorage.getItem("brytechat.organiser.v1")).toBeNull();
+    expect(localStorage.getItem("bryteinbox.organiser.v1")).not.toBeNull();
+  });
   it("tomorrow preset is 9am next day", () => {
     const d = reminderPreset("tomorrow", new Date(2026, 9, 22, 15));
     expect([d.getDate(), d.getHours()]).toEqual([23, 9]);

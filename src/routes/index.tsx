@@ -23,9 +23,9 @@ import { useAuth } from '@/providers/auth';
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Inbox · BryteChat" },
+      { title: "Inbox · BryteInbox" },
       { name: "description", content: "One calm inbox for iMessage, WhatsApp, LinkedIn, Instagram, Telegram, Slack and X." },
-      { property: "og:title", content: "BryteChat — one inbox for every DM" },
+      { property: "og:title", content: "BryteInbox — one inbox for every DM" },
       { property: "og:description", content: "Tag, remind and reply across every messaging platform." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -272,7 +272,7 @@ function App() {
       </aside>
 
       <aside className="navigation-pane flex shrink-0 flex-col border-r bg-rail px-2.5 py-3">
-        <div className="navigation-title">BryteChat <IconBtn title="Collapse navigation" onClick={() => { setNavigationOpen(false); setNavigationCollapsed(true); }}><PanelLeft /></IconBtn></div>
+        <div className="navigation-title">BryteInbox <IconBtn title="Collapse navigation" onClick={() => { setNavigationOpen(false); setNavigationCollapsed(true); }}><PanelLeft /></IconBtn></div>
         <Button variant="ghost" onClick={() => setSwitcher(true)} className="mb-3 flex items-center gap-2 rounded-md border bg-card px-2.5 py-1.5 text-muted-foreground">
           <Search className="h-3.5 w-3.5" /> Search chat <span className="ml-auto"><Kbd>⌘K</Kbd></span>
         </Button>

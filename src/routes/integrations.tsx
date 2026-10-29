@@ -6,9 +6,9 @@ import { useAuth } from '@/providers/auth';
 export const Route = createFileRoute("/integrations")({
   head: () => ({
     meta: [
-      { title: "Messaging providers · BryteChat" },
-      { name: "description", content: "Beeper and Unipile connection requirements for your personal BryteChat inbox." },
-      { property: "og:title", content: "Messaging providers · BryteChat" },
+      { title: "Messaging providers · BryteInbox" },
+      { name: "description", content: "Beeper and Unipile connection requirements for your personal BryteInbox inbox." },
+      { property: "og:title", content: "Messaging providers · BryteInbox" },
       { property: "og:description", content: "Prepare your Beeper and Unipile messaging connections." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

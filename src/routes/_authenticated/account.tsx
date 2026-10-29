@@ -13,8 +13,8 @@ import { Label } from '@/components/ui/label';
 const profileQuery = () => queryOptions({ queryKey: ['personal-profile'], queryFn: () => getProfile() });
 export const Route = createFileRoute('/_authenticated/account')({
   head: () => ({ meta: [
-    { title: 'Your account · BryteChat' }, { name: 'description', content: 'Manage your private BryteChat profile and messaging providers.' },
-    { property: 'og:title', content: 'Your account · BryteChat' }, { property: 'og:description', content: 'Your personal profile and messaging connections.' },
+    { title: 'Your account · BryteInbox' }, { name: 'description', content: 'Manage your private BryteInbox profile and messaging providers.' },
+    { property: 'og:title', content: 'Your account · BryteInbox' }, { property: 'og:description', content: 'Your personal profile and messaging connections.' },
     { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary_large_image' },
   ] }),
   loader: ({ context }) => context.queryClient.ensureQueryData(profileQuery()),
