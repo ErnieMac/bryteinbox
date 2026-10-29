@@ -28,6 +28,15 @@ export class BeeperProvider implements MessagingProvider {
   constructor(private cfg: BeeperConfig) {}
 
   private async req(path: string, init?: RequestInit): Promise<any> {
+    if (typeof window !== "undefined" && window.bryteDesktop) {
+      const result = await window.bryteDesktop.beeperRequest({
+        baseUrl: this.cfg.baseUrl, token: this.cfg.token, path,
+        method: init?.method ?? "GET",
+        ...(typeof init?.body === "string" ? { body: init.body } : {}),
+      });
+      if (result.status < 200 || result.status >= 300) throw new Error(`Beeper responded ${result.status}`);
+      return result.body;
+    }
     const res = await fetch(`${this.cfg.baseUrl.replace(/\/$/, "")}${path}`, {
       ...init,
       headers: { Authorization: `Bearer ${this.cfg.token}`, "Content-Type": "application/json", ...(init?.headers ?? {}) },

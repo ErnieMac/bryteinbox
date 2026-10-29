@@ -22,3 +22,6 @@
 - Exclude unused managed cloud integration files from the personal app's TypeScript project; these platform-owned files remain until workspace database removal and are not bundled by any app import.
 - Beeper and Unipile remain setup-needed until secure per-user credentials and reachable endpoints exist; never substitute a shared provider account for individual connections.
 - `messagingProvider` (src/providers/index.ts) delegates per call to BeeperProvider when a Beeper Desktop token is saved in this browser, otherwise an empty provider; Unipile can join the same switch so the UI never changes.
+- Desktop packaging is isolated in electron/, scripts/package-macos.mjs and vite.desktop.config.ts; bundle a TanStack SPA over a loopback HTTP origin rather than loading file:// or the published website, preserving routing and stable local storage.
+- The desktop preload exposes only a validated loopback Beeper request bridge with caller checks, redirect rejection, sandboxing and context isolation; never disable browser security or expose generic IPC/network access.
+- macOS releases use @electron/packager from a clean temporary staging directory containing only Electron code and static web output; tagged GitHub releases build both architectures and publish ZIPs only after tests/builds succeed.
