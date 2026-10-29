@@ -6,7 +6,7 @@ BryteInbox is a fast, keyboard-first web app for personal use. It reads your cha
 
 > **Private by design:** BryteInbox runs entirely in your browser on your computer. It talks directly to the Beeper Desktop app running on the same machine. Your Beeper access token and your messages never leave your computer — there is no server that stores them.
 
-![BryteInbox](public/icon-512.png)
+![BryteInbox inbox preview with illustrative conversations](docs/images/inbox-preview.png)
 
 ## What it does
 
