@@ -18,6 +18,7 @@
 - Tags, reminders and archive state live only in src/lib/organiser-store.ts (localStorage today); this keeps a later move to a database in one place.
 - Inbox screens read provider data through the query hooks in src/hooks/use-inbox.ts and organiser state through useOrganiser; this keeps loading/error handling and cache refresh in one place.
 - Sign-in is hidden for personal use: no UI links to /auth or /account, but the auth routes and profile backend stay intact so accounts can return for monetisation.
+- The app must run from a fresh clone with no backend env vars: guard all Supabase client access behind `hasBackend` (src/providers/auth.tsx); this keeps public GitHub installs working without keys.
 - Profile operations use authenticated server functions and owner-scoped RLS, with one root auth subscriber and cache teardown on sign-out; this prevents cross-user profile exposure.
 - Beeper and Unipile remain setup-needed until secure per-user credentials and reachable endpoints exist; never substitute a shared provider account for individual connections.
 - `messagingProvider` (src/providers/index.ts) delegates per call to BeeperProvider when a Beeper Desktop token is saved in this browser, else MockProvider; Unipile will join the same switch so the UI never changes.
