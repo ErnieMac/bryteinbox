@@ -13,6 +13,8 @@ const output = path.join(os.tmpdir(), `bryteinbox-package-${arch}`);
 await rm(stage, { recursive: true, force: true });
 await mkdir(stage, { recursive: true });
 await cp('electron', path.join(stage, 'electron'), { recursive: true });
+await rm(path.join(stage, 'electron', 'security.test.cjs'));
+await rm(path.join(stage, 'electron', 'local-server.test.cjs'));
 await cp('dist/client', path.join(stage, 'web'), { recursive: true });
 await writeFile(path.join(stage, 'package.json'), JSON.stringify({ name: 'bryteinbox', productName: 'BryteInbox', version, main: 'electron/main.cjs' }));
 const electronVersion = JSON.parse(await readFile('node_modules/electron/package.json', 'utf8')).version;
@@ -30,5 +32,8 @@ await mkdir('release', { recursive: true });
 const appPath = path.join(paths[0], 'BryteInbox.app');
 execFileSync('codesign', ['--force', '--deep', '--sign', '-', appPath]);
 execFileSync('codesign', ['--verify', '--deep', '--strict', appPath]);
+if (arch === process.arch) {
+  execFileSync(path.join(appPath, 'Contents', 'MacOS', 'BryteInbox'), ['--smoke-test'], { timeout: 45000, stdio: 'inherit' });
+}
 execFileSync('ditto', ['-c', '-k', '--sequesterRsrc', '--keepParent', appPath, `release/BryteInbox-${version}-macOS-${arch}.zip`]);
 await rm(stage, { recursive: true, force: true });
