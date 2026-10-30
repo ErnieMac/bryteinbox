@@ -26,11 +26,13 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "Inbox · BryteInbox" },
       { name: "description", content: "One calm inbox for iMessage, WhatsApp, LinkedIn, Instagram, Telegram, Slack and X." },
-      { property: "og:title", content: "BryteInbox — one inbox for every DM" },
-      { property: "og:description", content: "Tag, remind and reply across every messaging platform." },
+      { property: "og:title", content: "BryteInbox — one unified inbox for all your DMs" },
+      { property: "og:description", content: "Bring iMessage, WhatsApp, LinkedIn, Instagram, Telegram, Slack and X messages into one inbox to tag, remind and reply." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://bryteinbox.brytelabs.co/" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://bryteinbox.brytelabs.co/" }],
   }),
   component: App,
 });
