@@ -21,6 +21,7 @@ import { reminderPreset } from "@/lib/organiser-store";
 import { accountsQuery, chatsQuery, messagesQuery, useMarkRead, useOrganiser, useSendMessage } from "@/hooks/use-inbox";
 
 export const Route = createFileRoute("/")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Inbox · BryteInbox" },

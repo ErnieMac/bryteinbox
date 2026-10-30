@@ -13,6 +13,7 @@ import type { Tag } from "@/lib/organiser-store";
 import { BeeperConnect } from "@/components/quicker/BeeperConnect";
 
 export const Route = createFileRoute("/settings")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Settings · BryteInbox" },
