@@ -2,7 +2,7 @@
 
 One calm inbox for all your direct messages — iMessage, WhatsApp, LinkedIn, Instagram, Telegram, Slack and X — on your own Mac or Windows PC.
 
-BryteInbox is a fast, keyboard-first web app for personal use. It reads your chats from [Beeper Desktop](https://www.beeper.com), a free app that unifies your messaging accounts, and presents them in a clean three-column workspace with tags, reminders, archiving and AI-suggested replies.
+BryteInbox reads your chats from [Beeper Desktop](https://www.beeper.com), a free app that unifies your messaging accounts, and presents them in a clean three-column workspace with tags, reminders, archiving and AI-suggested replies.
 
 > **Private by design:** BryteInbox runs entirely in your browser on your computer. It talks directly to the Beeper Desktop app running on the same machine. Your Beeper access token and your messages never leave your computer — there is no server that stores them.
 
