@@ -3,6 +3,7 @@ import { ArrowLeft, Monitor, Cloud } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/integrations")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Messaging providers · BryteInbox" },

@@ -25,3 +25,4 @@
 - Desktop packaging is isolated in electron/, scripts/package-macos.mjs and vite.desktop.config.ts; bundle a TanStack SPA over a loopback HTTP origin rather than loading file:// or the published website, preserving routing and stable local storage.
 - The desktop preload exposes only a validated loopback Beeper request bridge with caller checks, redirect rejection, sandboxing and context isolation; never disable browser security or expose generic IPC/network access.
 - macOS releases use @electron/packager from a clean temporary staging directory containing only Electron code and static web output; tagged GitHub releases build both architectures and publish ZIPs only after tests/builds succeed.
+- Sitemap URLs come from each route's required staticData.sitemap decision (src/lib/sitemap.ts + src/routes/sitemap[.]xml.ts); new routes must declare it so the sitemap stays accurate.

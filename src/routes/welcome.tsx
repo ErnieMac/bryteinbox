@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { BeeperConnect } from "@/components/quicker/BeeperConnect";
 
 export const Route = createFileRoute("/welcome")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Get started · BryteInbox" },
